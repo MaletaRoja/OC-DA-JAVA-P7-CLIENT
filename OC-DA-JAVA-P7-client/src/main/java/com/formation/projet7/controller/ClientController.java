@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.formation.projet7.model.Ouvrage;
 import com.formation.projet7.model.Utilisateur;
+import com.formation.projet7.proxy.MicroServiceMail;
 import com.formation.projet7.proxy.MicroServiceOuvrages;
 
 @Controller
@@ -18,6 +19,9 @@ public class ClientController {
 	
 	@Autowired
 	MicroServiceOuvrages microServiceOuvrages;
+	
+	@Autowired
+	MicroServiceMail microServiceMail;
 	
 	@GetMapping("/")
 	public String accueil() {
@@ -63,6 +67,16 @@ public class ClientController {
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("authentification", true);
 		return "ouvrages";
+	}
+	
+	// Simulation service mailing
+	
+	@GetMapping("/mail")
+	public String mail() {
+		
+		microServiceMail.sendSimpleEmail();
+		
+		return "ok";
 	}
 	
 	
