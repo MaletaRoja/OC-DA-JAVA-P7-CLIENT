@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.formation.projet7.model.ExemplaireDispo;
 import com.formation.projet7.model.Ouvrage;
 import com.formation.projet7.model.Utilisateur;
 import com.formation.projet7.proxy.MicroServiceMail;
@@ -89,6 +90,13 @@ public class ClientController {
 		System.out.println("Choix rubrique: " + rubrique);
 		return "ok";
 		
+	}
+	
+	@GetMapping("/exemplaire/disponibles")
+	public String listeExemplairesDisponibles() {
+		
+		List<ExemplaireDispo> exemplaireDisponibles = microServiceOuvrages.ListerExemplairesDisponibles();
+		return "ok";
 	}
 	
 	// Simulation service mailing

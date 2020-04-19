@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.formation.projet7.model.ExemplaireDispo;
 import com.formation.projet7.model.Ouvrage;
 
 @FeignClient(name="biblio-service", url="localhost:8081/biblio")
@@ -20,5 +21,8 @@ public interface MicroServiceOuvrages {
 	
 	@GetMapping("/ouvrage/rubriques")
 	public List<String> toutesLesRubriques();
+	
+	@GetMapping("/exemplaire/disponibles")
+	public List<ExemplaireDispo> ListerExemplairesDisponibles();
 
 }
