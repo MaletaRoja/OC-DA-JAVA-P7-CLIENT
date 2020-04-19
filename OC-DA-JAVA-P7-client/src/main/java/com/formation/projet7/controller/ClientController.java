@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.formation.projet7.model.Ouvrage;
@@ -80,6 +81,14 @@ public class ClientController {
 		model.addAttribute("authentification", true);
 		//System.out.println("***taille liste genre : " + genres.size());
 		return "rubriques";
+	}
+	
+	@PostMapping("/rubriques")
+	public String choixRubrique(String rubrique) {
+		
+		System.out.println("Choix rubrique: " + rubrique);
+		return "ok";
+		
 	}
 	
 	// Simulation service mailing

@@ -44,12 +44,12 @@
 
 				<h3 class="mt-2">Sélectionner une rubrique</h3>
 
-				<form method="post" th:action="@{/biblio/}"
-					th:object="${nomSecteur}">
+				<form method="post" th:action="@{/biblio/client/rubriques}"
+					th:object="${rubrique}">
 
 					<div class="form-group">
 						 <select
-							class="form-control"   name="rubrique">
+							class="form-control" name="rubrique">
 							<option th:each="genre: ${genres}" th:text="${genre}"></option>
 							
 						</select>
@@ -94,17 +94,6 @@
 		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
 		crossorigin="anonymous"></script>
 
-	<script>
-		var toggler = document.getElementsByClassName("caret");
-		var i;
-
-		for (i = 0; i < toggler.length; i++) {
-			toggler[i].addEventListener("click", function() {
-				this.parentElement.querySelector(".nested").classList
-						.toggle("active");
-				this.classList.toggle("caret-down");
-			});
-		}
-	</script>
+	
 </body>
 </html>
