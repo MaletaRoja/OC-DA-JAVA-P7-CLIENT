@@ -57,9 +57,7 @@
 							<th scope="col">Auteur</th>
 							<th scope="col">Edition</th>
 							<th scope="col">Genre</th>
-							<th scope="col">Date début</th>
-							<th scope="col">Date Fin</th>
-							<th scope="col">Renouveller</th>
+							<th scope="col">disponibles</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -69,10 +67,8 @@
 							<td th:text="${ouvrage.auteur_prenom} + ' ' + ${ouvrage.auteur_nom}"/>
 							<td th:text="${ouvrage.edition}" />
 							<td th:text="${ouvrage.genre}" />
-							<td>19/04/20</td>
-							<td>25/05/20</td>
-							<td>oui</td>
-
+							<td>Oui</td>
+							
 						</tr>
 						
 					</tbody>
@@ -87,7 +83,7 @@
 		<div class="row mt-3">
 			<div class="col d-flex justify-content-center">
 				<div class="form-group ">
-					<a href="/biblio/espace"><p type="text" class="btn btn-block"
+					<a href="/biblio/client/espace"><p type="text" class="btn btn-block"
 							style="background-color: #a32fa9; color: white; width: 350px;">Retour</p></a>
 				</div>
 			</div>

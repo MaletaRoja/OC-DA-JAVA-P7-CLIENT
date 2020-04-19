@@ -40,6 +40,15 @@ public class ClientController {
 		return "espace";
 	}
 	
+	@GetMapping("/espace")
+	public String espace(Model model) {
+		
+		Utilisateur utilisateur = new Utilisateur(1, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		model.addAttribute("utilisateur", utilisateur);
+		model.addAttribute("authentification", true);
+		return "espace";
+	}
+	
 	@GetMapping("/ouvrages")
 	public String listeOuvgrages(Model model) {
 		
