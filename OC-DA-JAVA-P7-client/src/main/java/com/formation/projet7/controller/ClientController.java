@@ -36,12 +36,12 @@ public class ClientController {
 		
 		Utilisateur utilisateur = new Utilisateur(1, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
 		model.addAttribute("utilisateur", utilisateur);
-		model.addAttribute("authentifier", true);
+		model.addAttribute("authentification", true);
 		return "espace";
 	}
 	
 	@GetMapping("/ouvrages")
-	public String listeOuvgrages() {
+	public String listeOuvgrages(Model model) {
 		
 		List<Ouvrage> ouvrages = microServiceOuvrages.tousLesOuvrages();
 		System.out.println("Nombre d'ouvrages: " + ouvrages.size());
@@ -49,8 +49,11 @@ public class ClientController {
 		System.out.println(ouvrages.get(0).getTitre());
 		System.out.println("---------------------------------");
 		System.out.println(ouvrages.get(1).getTitre());
-		
-		return "ok";
+		Utilisateur utilisateur = new Utilisateur(1, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		model.addAttribute("ouvrages", ouvrages);
+		model.addAttribute("utilisateur", utilisateur);
+		model.addAttribute("authentification", true);
+		return "ouvrages";
 	}
 	
 	
