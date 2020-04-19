@@ -17,5 +17,8 @@ public interface MicroServiceOuvrages {
 	
 	@GetMapping("/ouvrage/{id}")
 	ResponseEntity<?> unOuvrage(@PathVariable("id") Integer id);
+	
+	@GetMapping("/ouvrage/rubriques")
+	public List<String> toutesLesRubriques();
 
 }

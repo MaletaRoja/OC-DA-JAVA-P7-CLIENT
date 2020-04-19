@@ -69,6 +69,19 @@ public class ClientController {
 		return "ouvrages";
 	}
 	
+	
+	@GetMapping("/rubriques")
+	public String rubriques(Model model) {
+		
+		List<String> genres = microServiceOuvrages.toutesLesRubriques();
+		Utilisateur utilisateur = new Utilisateur(1, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		model.addAttribute("genres", genres);
+		model.addAttribute("utilisateur", utilisateur);
+		model.addAttribute("authentification", true);
+		//System.out.println("***taille liste genre : " + genres.size());
+		return "rubriques";
+	}
+	
 	// Simulation service mailing
 	
 	@GetMapping("/mail")
