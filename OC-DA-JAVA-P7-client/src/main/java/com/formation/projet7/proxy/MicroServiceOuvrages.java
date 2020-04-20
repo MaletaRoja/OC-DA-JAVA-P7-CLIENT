@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.formation.projet7.model.Exemplaire;
 import com.formation.projet7.model.ExemplaireDispo;
 import com.formation.projet7.model.Ouvrage;
 
@@ -22,7 +23,14 @@ public interface MicroServiceOuvrages {
 	@GetMapping("/ouvrage/rubriques")
 	public List<String> toutesLesRubriques();
 	
+	/*
 	@GetMapping("/exemplaire/disponibles")
 	public List<ExemplaireDispo> ListerExemplairesDisponibles();
+	*/
 
+	@GetMapping("/exemplaire/disponibles")
+	public List<Exemplaire> ListerExemplairesDisponibles();
+	
+	@GetMapping("/exemplaire/disponibles/{id}")
+	public List<Exemplaire> ListerExemplairesDisponiblesParOuvrage(@PathVariable("id") Integer id);
 }

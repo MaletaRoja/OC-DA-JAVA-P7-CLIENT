@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.formation.projet7.model.Exemplaire;
 import com.formation.projet7.model.ExemplaireDispo;
 import com.formation.projet7.model.Ouvrage;
 import com.formation.projet7.model.Utilisateur;
@@ -64,6 +65,15 @@ public class ClientController {
 		System.out.println(ouvrages.get(0).getTitre());
 		System.out.println("---------------------------------");
 		System.out.println(ouvrages.get(1).getTitre());
+		System.out.println("---------------------------------");
+		/*
+		List<Exemplaire> exemplaires = ouvrages.get(0).getExemplaires();
+		System.out.println("taille liste exemplaire index 0: " + exemplaires.size());
+		*/
+		
+		List<Exemplaire> exemplaires = microServiceOuvrages.ListerExemplairesDisponibles();
+		System.out.println("taille liste exemplaires disponibles: " + exemplaires.size());
+		
 		Utilisateur utilisateur = new Utilisateur(1, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
 		model.addAttribute("ouvrages", ouvrages);
 		model.addAttribute("utilisateur", utilisateur);
@@ -95,7 +105,10 @@ public class ClientController {
 	@GetMapping("/exemplaire/disponibles")
 	public String listeExemplairesDisponibles() {
 		
-		List<ExemplaireDispo> exemplaireDisponibles = microServiceOuvrages.ListerExemplairesDisponibles();
+		List<Exemplaire> exemplaireDisponibles = microServiceOuvrages.ListerExemplairesDisponibles();
+		System.out.println("taille liste exemplaires dispo: " + exemplaireDisponibles.size());
+		List<Ouvrage> ouvrages = microServiceOuvrages.tousLesOuvrages();
+		System.out.println("taille liste ouvrages: " + ouvrages.size());
 		return "ok";
 	}
 	
