@@ -66,6 +66,7 @@ public class ClientController {
 		System.out.println("---------------------------------");
 		System.out.println(ouvrages.get(1).getTitre());
 		System.out.println("---------------------------------");
+		
 		/*
 		List<Exemplaire> exemplaires = ouvrages.get(0).getExemplaires();
 		System.out.println("taille liste exemplaire index 0: " + exemplaires.size());
