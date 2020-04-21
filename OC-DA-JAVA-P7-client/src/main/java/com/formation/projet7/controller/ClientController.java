@@ -68,6 +68,17 @@ public class ClientController {
 		System.out.println("---------------------------------");
 		
 		/*
+		Ouvrage ouvrage = ouvrages.get(0);
+		List<Exemplaire> exempls = ouvrage.getExemplaires();
+		System.out.println("taille liste exemplaires: " + exempls.size());
+		Exemplaire ex = exempls.get(0);
+		Integer id = ex.getId();
+		
+		System.out.println("Id de l'exemplaire: " + id);
+		System.out.println("-------------------------------");
+		System.out.println("Disponible: " + ex.isDisponible());
+		
+		/*
 		List<Exemplaire> exemplaires = ouvrages.get(0).getExemplaires();
 		System.out.println("taille liste exemplaire index 0: " + exemplaires.size());
 		*/
