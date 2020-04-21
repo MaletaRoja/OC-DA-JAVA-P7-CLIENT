@@ -40,5 +40,6 @@ public interface MicroServiceOuvrages {
 	@PostMapping("/connexion/")
 	public ResponseEntity<String> generate(@RequestBody final Login login);
 
+	
 }
 
