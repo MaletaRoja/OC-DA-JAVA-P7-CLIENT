@@ -17,6 +17,7 @@ import com.formation.projet7.model.OuvrageAux;
 import com.formation.projet7.model.Utilisateur;
 import com.formation.projet7.proxy.MicroServiceMail;
 import com.formation.projet7.proxy.MicroServiceOuvrages;
+import com.formation.projet7.service.PageOuvrage;
 
 @Controller
 @RequestMapping("/biblio/client")
@@ -27,6 +28,9 @@ public class ClientController {
 	
 	@Autowired
 	MicroServiceMail microServiceMail;
+	
+	@Autowired
+	PageOuvrage pageOuvrage;
 	
 	@GetMapping("/")
 	public String accueil() {
@@ -63,32 +67,17 @@ public class ClientController {
 		
 		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages();
 		Utilisateur utilisateur = new Utilisateur(1, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
-		List<Integer> nbreExemplairesDispos = new ArrayList<Integer>();
-		int nombre = 0;
-		for (OuvrageAux ouvrage: ouvrages) {
-			
-			Exemplaire[] exs = ouvrage.getExemplaires(); 
-			for (int i=0; i<exs.length; i++) {
-				Exemplaire ex = exs[i];
-				boolean offrable = ex.isActif() && ex.isDisponible();
-				if (offrable) {
-					
-					nombre++;
-				}
-				
-			}
-			nbreExemplairesDispos.add(nombre);
-			nombre = 0;
-		}
+		List<Integer> nbreExemplairesDispos = pageOuvrage.exemplairesDisposParOuvrage(ouvrages);
 		model.addAttribute("ouvrages", ouvrages);
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("authentification", true);
 		model.addAttribute("nbreExemplairesDispos", nbreExemplairesDispos);
+		model.addAttribute("rubrique", "toutes");
 		return "ouvrages";
 	}
 	
 	
-	@GetMapping("/rubriques")
+	@GetMapping("/rubriques")     // Demande choix de rubrique pour affichage des ouvrages correspondants
 	public String rubriques(Model model) {
 		
 		List<String> genres = microServiceOuvrages.toutesLesRubriques();
@@ -99,11 +88,19 @@ public class ClientController {
 		return "rubriques";
 	}
 	
-	@PostMapping("/rubriques")
-	public String choixRubrique(String rubrique) {
+	@PostMapping("/rubriques")    // Affichage des ouvrages par rubrique/genre
+	public String choixRubrique(String rubrique, Model model) {
 		
 		System.out.println("Choix rubrique: " + rubrique);
-		return "ok";
+		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvragesParRubrique(rubrique);
+		Utilisateur utilisateur = new Utilisateur(1, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		List<Integer> nbreExemplairesDispos = pageOuvrage.exemplairesDisposParOuvrage(ouvrages);
+		model.addAttribute("ouvrages", ouvrages);
+		model.addAttribute("rubrique", rubrique);
+		model.addAttribute("utilisateur", utilisateur);
+		model.addAttribute("authentification", true);
+		model.addAttribute("nbreExemplairesDispos", nbreExemplairesDispos);
+		return "ouvrages";
 		
 	}
 	

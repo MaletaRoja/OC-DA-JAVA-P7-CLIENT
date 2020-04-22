@@ -27,11 +27,6 @@ public interface MicroServiceOuvrages {
 	@GetMapping("/ouvrage/rubriques")
 	public List<String> toutesLesRubriques();
 	
-	/*
-	@GetMapping("/exemplaire/disponibles")
-	public List<ExemplaireDispo> ListerExemplairesDisponibles();
-	*/
-
 	@GetMapping("/exemplaire/disponibles")
 	public List<Exemplaire> ListerExemplairesDisponibles();
 	
@@ -40,7 +35,9 @@ public interface MicroServiceOuvrages {
 
 	@PostMapping("/connexion/")
 	public ResponseEntity<String> generate(@RequestBody final Login login);
-
+	
+	@GetMapping("/ouvrage/liste/rubrique/{rubrique}")
+	public List<OuvrageAux> tousLesOuvragesParRubrique(@PathVariable  String rubrique);
 	
 }
 
