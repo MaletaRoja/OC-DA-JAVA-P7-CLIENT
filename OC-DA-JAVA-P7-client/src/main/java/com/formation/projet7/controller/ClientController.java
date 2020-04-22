@@ -63,9 +63,27 @@ public class ClientController {
 		
 		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages();
 		Utilisateur utilisateur = new Utilisateur(1, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		List<Integer> nbreExemplairesDispos = new ArrayList<Integer>();
+		int nombre = 0;
+		for (OuvrageAux ouvrage: ouvrages) {
+			
+			Exemplaire[] exs = ouvrage.getExemplaires(); 
+			for (int i=0; i<exs.length; i++) {
+				Exemplaire ex = exs[i];
+				boolean offrable = ex.isActif() && ex.isDisponible();
+				if (offrable) {
+					
+					nombre++;
+				}
+				
+			}
+			nbreExemplairesDispos.add(nombre);
+			nombre = 0;
+		}
 		model.addAttribute("ouvrages", ouvrages);
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("authentification", true);
+		model.addAttribute("nbreExemplairesDispos", nbreExemplairesDispos);
 		return "ouvrages";
 	}
 	
@@ -78,7 +96,6 @@ public class ClientController {
 		model.addAttribute("genres", genres);
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("authentification", true);
-		//System.out.println("***taille liste genre : " + genres.size());
 		return "rubriques";
 	}
 	
