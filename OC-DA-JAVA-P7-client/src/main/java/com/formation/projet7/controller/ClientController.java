@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.formation.projet7.model.Emprunt;
 import com.formation.projet7.model.Exemplaire;
 import com.formation.projet7.model.ExemplaireDispo;
 import com.formation.projet7.model.Ouvrage;
@@ -17,6 +19,7 @@ import com.formation.projet7.model.OuvrageAux;
 import com.formation.projet7.model.Utilisateur;
 import com.formation.projet7.proxy.MicroServiceMail;
 import com.formation.projet7.proxy.MicroServiceOuvrages;
+import com.formation.projet7.service.EmpruntOuvrage;
 import com.formation.projet7.service.PageOuvrage;
 
 @Controller
@@ -31,6 +34,9 @@ public class ClientController {
 	
 	@Autowired
 	PageOuvrage pageOuvrage;
+	
+	@Autowired
+	EmpruntOuvrage empruntOuvrage;
 	
 	@GetMapping("/")
 	public String accueil() {
@@ -81,7 +87,7 @@ public class ClientController {
 	public String rubriques(Model model) {
 		
 		List<String> genres = microServiceOuvrages.toutesLesRubriques();
-		Utilisateur utilisateur = new Utilisateur(1, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
 		model.addAttribute("genres", genres);
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("authentification", true);
@@ -91,9 +97,8 @@ public class ClientController {
 	@PostMapping("/rubriques")    // Affichage des ouvrages par rubrique/genre
 	public String choixRubrique(String rubrique, Model model) {
 		
-		System.out.println("Choix rubrique: " + rubrique);
 		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvragesParRubrique(rubrique);
-		Utilisateur utilisateur = new Utilisateur(1, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
 		List<Integer> nbreExemplairesDispos = pageOuvrage.exemplairesDisposParOuvrage(ouvrages);
 		model.addAttribute("ouvrages", ouvrages);
 		model.addAttribute("rubrique", rubrique);
@@ -111,6 +116,18 @@ public class ClientController {
 		System.out.println("taille liste exemplaires dispo: " + exemplaireDisponibles.size());
 		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages();
 		System.out.println("taille liste ouvrages: " + ouvrages.size());
+		return "rubriques";
+	}
+	
+	@GetMapping("/emprunter/{id}/{rubrique}")
+	public String emprunter(@PathVariable("id") Integer id
+		, @PathVariable("rubrique") String rubrique) {
+		
+		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvragesParRubrique(rubrique);
+		Emprunt emprunt = empruntOuvrage.emprunter(ouvrages, id, utilisateur);
+		microServiceOuvrages.enregistrerEmprunt(emprunt);
+		
 		return "ok";
 	}
 	

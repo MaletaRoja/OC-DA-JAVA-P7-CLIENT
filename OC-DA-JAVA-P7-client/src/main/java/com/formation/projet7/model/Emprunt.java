@@ -1,34 +1,27 @@
 package com.formation.projet7.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
-
 
 public class Emprunt implements Serializable {
 	
-
-	
 	private Integer id;
-	
-	
 	private Exemplaire exemplaire;
-	
-	
-	
 	private Utilisateur emprunteur;
-
-	private Date debut;
-	private Date fin;
+	private LocalDateTime debut;
+	private LocalDateTime fin;
 	private boolean prolongation; 
 	private boolean actif;
 	
 	private static final long serialVersionUID = 1L;
-	
+
 	public Emprunt() {
 		
 	}
 
-	public Emprunt(Integer id, Exemplaire exemplaire, Utilisateur emprunteur, Date debut, Date fin,
+	public Emprunt(Integer id, Exemplaire exemplaire, Utilisateur emprunteur, LocalDateTime debut, LocalDateTime fin,
 			boolean prolongation, boolean actif) {
 		super();
 		this.id = id;
@@ -64,19 +57,19 @@ public class Emprunt implements Serializable {
 		this.emprunteur = emprunteur;
 	}
 
-	public Date getDebut() {
+	public LocalDateTime getDebut() {
 		return debut;
 	}
 
-	public void setDebut(Date debut) {
+	public void setDebut(LocalDateTime debut) {
 		this.debut = debut;
 	}
 
-	public Date getFin() {
+	public LocalDateTime getFin() {
 		return fin;
 	}
 
-	public void setFin(Date fin) {
+	public void setFin(LocalDateTime fin) {
 		this.fin = fin;
 	}
 
@@ -96,6 +89,4 @@ public class Emprunt implements Serializable {
 		this.actif = actif;
 	}
 
-	
-	
 }

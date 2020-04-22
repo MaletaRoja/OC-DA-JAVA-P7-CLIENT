@@ -7,8 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.formation.projet7.model.Emprunt;
 import com.formation.projet7.model.Exemplaire;
 import com.formation.projet7.model.ExemplaireDispo;
 import com.formation.projet7.model.Login;
@@ -39,5 +41,7 @@ public interface MicroServiceOuvrages {
 	@GetMapping("/ouvrage/liste/rubrique/{rubrique}")
 	public List<OuvrageAux> tousLesOuvragesParRubrique(@PathVariable  String rubrique);
 	
+	@PutMapping("/emprunts/save")
+	public void enregistrerEmprunt(@RequestBody Emprunt emprunt);
 }
 
