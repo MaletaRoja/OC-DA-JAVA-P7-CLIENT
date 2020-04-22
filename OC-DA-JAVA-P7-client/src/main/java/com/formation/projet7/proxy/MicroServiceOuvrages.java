@@ -13,12 +13,13 @@ import com.formation.projet7.model.Exemplaire;
 import com.formation.projet7.model.ExemplaireDispo;
 import com.formation.projet7.model.Login;
 import com.formation.projet7.model.Ouvrage;
+import com.formation.projet7.model.OuvrageAux;
 
 @FeignClient(name="biblio-service", url="localhost:8081/biblio")
 public interface MicroServiceOuvrages {
 	
 	@GetMapping("/ouvrage/liste")
-	List<Ouvrage> tousLesOuvrages();
+	List<OuvrageAux> tousLesOuvrages();
 	
 	@GetMapping("/ouvrage/{id}")
 	ResponseEntity<?> unOuvrage(@PathVariable("id") Integer id);

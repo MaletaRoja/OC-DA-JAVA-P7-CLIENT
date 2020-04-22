@@ -1,5 +1,6 @@
 package com.formation.projet7.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.formation.projet7.model.Exemplaire;
 import com.formation.projet7.model.ExemplaireDispo;
 import com.formation.projet7.model.Ouvrage;
+import com.formation.projet7.model.OuvrageAux;
 import com.formation.projet7.model.Utilisateur;
 import com.formation.projet7.proxy.MicroServiceMail;
 import com.formation.projet7.proxy.MicroServiceOuvrages;
@@ -59,33 +61,7 @@ public class ClientController {
 	@GetMapping("/ouvrages")
 	public String listeOuvgrages(Model model) {
 		
-		List<Ouvrage> ouvrages = microServiceOuvrages.tousLesOuvrages();
-		System.out.println("Nombre d'ouvrages: " + ouvrages.size());
-		System.out.println("---------------------------------");
-		System.out.println(ouvrages.get(0).getTitre());
-		System.out.println("---------------------------------");
-		System.out.println(ouvrages.get(1).getTitre());
-		System.out.println("---------------------------------");
-		
-		/*
-		Ouvrage ouvrage = ouvrages.get(0);
-		List<Exemplaire> exempls = ouvrage.getExemplaires();
-		System.out.println("taille liste exemplaires: " + exempls.size());
-		Exemplaire ex = exempls.get(0);
-		Integer id = ex.getId();
-		
-		System.out.println("Id de l'exemplaire: " + id);
-		System.out.println("-------------------------------");
-		System.out.println("Disponible: " + ex.isDisponible());
-		
-		/*
-		List<Exemplaire> exemplaires = ouvrages.get(0).getExemplaires();
-		System.out.println("taille liste exemplaire index 0: " + exemplaires.size());
-		*/
-		
-		List<Exemplaire> exemplaires = microServiceOuvrages.ListerExemplairesDisponibles();
-		System.out.println("taille liste exemplaires disponibles: " + exemplaires.size());
-		
+		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages();
 		Utilisateur utilisateur = new Utilisateur(1, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
 		model.addAttribute("ouvrages", ouvrages);
 		model.addAttribute("utilisateur", utilisateur);
@@ -119,7 +95,7 @@ public class ClientController {
 		
 		List<Exemplaire> exemplaireDisponibles = microServiceOuvrages.ListerExemplairesDisponibles();
 		System.out.println("taille liste exemplaires dispo: " + exemplaireDisponibles.size());
-		List<Ouvrage> ouvrages = microServiceOuvrages.tousLesOuvrages();
+		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages();
 		System.out.println("taille liste ouvrages: " + ouvrages.size());
 		return "ok";
 	}

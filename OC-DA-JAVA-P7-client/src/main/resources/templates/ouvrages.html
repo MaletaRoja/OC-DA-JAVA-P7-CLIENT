@@ -67,7 +67,10 @@
 							<td th:text="${ouvrage.auteur_prenom} + ' ' + ${ouvrage.auteur_nom}"/>
 							<td th:text="${ouvrage.edition}" />
 							<td th:text="${ouvrage.genre}" />
-							<td>Oui</td>
+							<td th:text="${ouvrage.exemplaires.length}" />
+							
+							
+							</td>
 							
 						</tr>
 						
