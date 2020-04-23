@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.formation.projet7.model.Emprunt;
+import com.formation.projet7.model.EmpruntAux;
 import com.formation.projet7.model.Exemplaire;
 import com.formation.projet7.model.ExemplaireDispo;
 import com.formation.projet7.model.Ouvrage;
@@ -124,9 +125,15 @@ public class ClientController {
 		, @PathVariable("rubrique") String rubrique) {
 		
 		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
-		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvragesParRubrique(rubrique);
-		Emprunt emprunt = empruntOuvrage.emprunter(ouvrages, id, utilisateur);
-		microServiceOuvrages.enregistrerEmprunt(emprunt);
+		EmpruntAux empruntAux = new EmpruntAux();
+		empruntAux.setIdUser(utilisateur.getId());
+		empruntAux.setNumero(id);
+		empruntAux.setRubrique(rubrique);
+		
+		System.out.println("id user" + empruntAux.getIdUser());
+		System.out.println("rubrique: " + empruntAux.getRubrique());
+		System.out.println("num" + empruntAux.getNumero());
+		microServiceOuvrages.enregistrerEmprunt(empruntAux);
 		
 		return "ok";
 	}

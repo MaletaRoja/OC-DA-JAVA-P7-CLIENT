@@ -1,5 +1,7 @@
 package com.formation.projet7.model;
 
+import com.formation.projet7.service.utils.OuvrageOutil;
+
 public class OuvrageAux {
 	
 	private Integer id;
@@ -8,36 +10,35 @@ public class OuvrageAux {
 	private String auteur_prenom;
 	private String edition;
 	private String genre;
-	private Exemplaire[] exemplaires;
+	private int offrable;
 	
 	public OuvrageAux() {
 		
 	}
 
 	public OuvrageAux(Integer id, String titre, String auteur_nom, String auteur_prenom, String edition, String genre,
-			Exemplaire[] exemplaires) {
-		
-		
+			int offrable) {
+		super();
 		this.id = id;
 		this.titre = titre;
 		this.auteur_nom = auteur_nom;
 		this.auteur_prenom = auteur_prenom;
 		this.edition = edition;
 		this.genre = genre;
-		this.exemplaires = exemplaires;
+		this.offrable = offrable;
 	}
 	
 	public OuvrageAux(Ouvrage ouvrage) {
-		
+	
 		this.id = ouvrage.getId();
 		this.titre = ouvrage.getTitre();
 		this.auteur_nom = ouvrage.getAuteur_nom();
 		this.auteur_prenom = ouvrage.getAuteur_prenom();
 		this.edition = ouvrage.getEdition();
 		this.genre = ouvrage.getGenre();
-		this.exemplaires = ouvrage.getExemplaires().toArray(new Exemplaire[ouvrage.getExemplaires().size()]);
-	
+		this.offrable = new OuvrageOutil().DenombreExDisponibles(ouvrage);
 	}
+	
 
 	public Integer getId() {
 		return id;
@@ -87,13 +88,15 @@ public class OuvrageAux {
 		this.genre = genre;
 	}
 
-	public Exemplaire[] getExemplaires() {
-		return exemplaires;
+	public int getOffrable() {
+		return offrable;
 	}
 
-	public void setExemplaires(Exemplaire[] exemplaires) {
-		this.exemplaires = exemplaires;
+	public void setOffrable(int offrable) {
+		this.offrable = offrable;
 	}
+
+
 	
 
 }

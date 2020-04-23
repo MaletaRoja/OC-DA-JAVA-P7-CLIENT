@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.formation.projet7.model.Emprunt;
+import com.formation.projet7.model.EmpruntAux;
 import com.formation.projet7.model.Exemplaire;
 import com.formation.projet7.model.ExemplaireDispo;
 import com.formation.projet7.model.Login;
 import com.formation.projet7.model.Ouvrage;
 import com.formation.projet7.model.OuvrageAux;
+import com.formation.projet7.model.Utilisateur;
 
 @FeignClient(name="biblio-service", url="localhost:8081/biblio")
 public interface MicroServiceOuvrages {
@@ -41,7 +43,14 @@ public interface MicroServiceOuvrages {
 	@GetMapping("/ouvrage/liste/rubrique/{rubrique}")
 	public List<OuvrageAux> tousLesOuvragesParRubrique(@PathVariable  String rubrique);
 	
+	/*
 	@PutMapping("/emprunts/save")
 	public void enregistrerEmprunt(@RequestBody Emprunt emprunt);
+	*/
+	
+	@PutMapping("/emprunts/save")
+	void enregistrerEmprunt(EmpruntAux empruntAux);
+	
+	
 }
 

@@ -13,21 +13,11 @@ public class PageOuvrage {
 	
 	public List<Integer> exemplairesDisposParOuvrage(List<OuvrageAux> ouvrages){
 	List<Integer> nbreExemplairesDispos = new ArrayList<Integer>();
-	int nombre = 0;
+	
 	for (OuvrageAux ouvrage: ouvrages) {
 		
-		Exemplaire[] exs = ouvrage.getExemplaires(); 
-		for (int i=0; i<exs.length; i++) {
-			Exemplaire ex = exs[i];
-			boolean offrable = ex.isActif() && ex.isDisponible();
-			if (offrable) {
-				
-				nombre++;
-			}
-			
-		}
-		nbreExemplairesDispos.add(nombre);
-		nombre = 0;
+		int disponibles = ouvrage.getOffrable(); 
+		nbreExemplairesDispos.add(disponibles);
 	}
 	
 	return nbreExemplairesDispos;

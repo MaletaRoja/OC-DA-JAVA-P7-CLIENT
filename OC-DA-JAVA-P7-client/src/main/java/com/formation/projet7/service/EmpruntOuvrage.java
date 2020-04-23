@@ -22,6 +22,7 @@ public class EmpruntOuvrage {
 	
 	public Emprunt emprunter(List<OuvrageAux> ouvrages, Integer id, Utilisateur user) {
 		
+		/*
 		OuvrageAux ouvrage = ouvrages.get(id);
 		Exemplaire[] exemplaires = ouvrage.getExemplaires();
 		boolean exemplaireTrouve = false;
@@ -47,10 +48,8 @@ public class EmpruntOuvrage {
 		System.out.println("date début: " + debut);
 		System.out.println("date fin:   " + fin);
 		return emprunt;
-		
+		*/
+		return null;
 	}
 	
-	
-	
-
 }
