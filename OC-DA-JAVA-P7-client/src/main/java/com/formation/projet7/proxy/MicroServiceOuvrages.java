@@ -53,6 +53,7 @@ public interface MicroServiceOuvrages {
 	@GetMapping("/ouvrage/emprunts/hist/{id}")
 	public List<LigneEmprunt> empruntsHist(@PathVariable  Integer id);
 	
-	
+	@GetMapping("/prolonger/{id}")
+	void prolonger(@PathVariable  Integer id);
 }
 

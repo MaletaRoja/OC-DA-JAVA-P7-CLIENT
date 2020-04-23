@@ -42,7 +42,16 @@
 
 			<div class="col">
 
-				<h3 class="mt-2">Votre demande d'emprunt à été enregistré</h3>
+				<span th:if="${enregistrement}">
+
+					<h3 class="mt-2">Votre demande d'emprunt à été enregistré</h3>
+				</span>
+				
+				<span th:unless="${enregistrement}">
+
+					<h3 class="mt-2">Votre emprunt est prolongé de quatres semaines</h3>
+				</span>
+
 
 
 			</div>

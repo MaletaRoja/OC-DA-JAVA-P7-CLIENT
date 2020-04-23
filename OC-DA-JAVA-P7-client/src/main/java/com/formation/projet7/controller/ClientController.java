@@ -122,7 +122,7 @@ public class ClientController {
 	
 	@GetMapping("/emprunter/{id}/{rubrique}")
 	public String emprunter(@PathVariable("id") Integer id
-		, @PathVariable("rubrique") String rubrique) {
+		, @PathVariable("rubrique") String rubrique, Model model) {
 		
 		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
 		EmpruntAux empruntAux = new EmpruntAux();
@@ -131,8 +131,8 @@ public class ClientController {
 		empruntAux.setRubrique(rubrique);
 		
 		microServiceOuvrages.enregistrerEmprunt(empruntAux);
-		
-		return Constants.PAGE_CONF_EMPRUNT;
+		model.addAttribute("enregistrement", true);
+		return Constants.CONFIRMATION;
 	}
 	
 	
@@ -161,6 +161,20 @@ public class ClientController {
 		model.addAttribute("authentification", true);
 		return Constants.EMPRUNTS;
 		
+	}
+	
+	@GetMapping("/prolonger/{id}")
+	public String prolonger(@PathVariable("id") Integer id, Model model) {
+		
+		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsActifs(utilisateur.getId());
+		LigneEmprunt emprunt = emprunts.get(id);
+		Integer idExemplaire = emprunt.getId();
+		microServiceOuvrages.prolonger(idExemplaire);
+		model.addAttribute("utilisateur", utilisateur);
+		model.addAttribute("authentification", true);
+		model.addAttribute("enregistrement", false);
+		return Constants.CONFIRMATION;
 	}
 	
 	// Simulation service mailing

@@ -10,7 +10,7 @@ public class Constants {
 	public static final String MODIFIER_COMPTE = "modifierCompte";
 	public static final String EMPRUNTS = "emprunts";
 	public static final String RUBRIQUES = "rubriques";
-	public static final String PAGE_CONF_EMPRUNT = "confirmation_emprunt";
+	public static final String CONFIRMATION = "confirmation";
 	public static final int DELAY_MIN = 5;
 
 
