@@ -50,6 +50,9 @@ public interface MicroServiceOuvrages {
 	@GetMapping("/ouvrage/emprunts/actifs/{id}")
 	public List<LigneEmprunt> empruntsActifs(@PathVariable  Integer id);
 	
+	@GetMapping("/ouvrage/emprunts/hist/{id}")
+	public List<LigneEmprunt> empruntsHist(@PathVariable  Integer id);
+	
 	
 }
 

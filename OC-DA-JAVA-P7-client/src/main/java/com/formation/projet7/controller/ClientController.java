@@ -139,16 +139,28 @@ public class ClientController {
 	@GetMapping("/emprunts/{id}")
 	public String voirEmprunts(@PathVariable("id") Integer id, Model model) {
 		
-		System.out.println("entrée get emprunts");
+		
 		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
 		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsActifs(utilisateur.getId());
-		System.out.println("Taille des emprunts reçus: " +  emprunts.size());
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("emprunts", emprunts);
 		model.addAttribute("historique", false);
 		model.addAttribute("authentification", true);
 		return Constants.EMPRUNTS;
-		//return "ok";
+		
+	}
+	
+	@GetMapping("/emprunts/historique/{id}")
+	public String voirTousEmprunts(@PathVariable("id") Integer id, Model model) {
+		
+		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsHist(utilisateur.getId());
+		model.addAttribute("utilisateur", utilisateur);
+		model.addAttribute("emprunts", emprunts);
+		model.addAttribute("historique", true);
+		model.addAttribute("authentification", true);
+		return Constants.EMPRUNTS;
+		
 	}
 	
 	// Simulation service mailing
