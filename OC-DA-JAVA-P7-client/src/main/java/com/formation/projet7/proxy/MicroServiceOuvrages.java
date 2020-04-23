@@ -18,6 +18,7 @@ import com.formation.projet7.model.Login;
 import com.formation.projet7.model.Ouvrage;
 import com.formation.projet7.model.OuvrageAux;
 import com.formation.projet7.model.Utilisateur;
+import com.formation.projet7.model.auxiliaire.LigneEmprunt;
 
 @FeignClient(name="biblio-service", url="localhost:8081/biblio")
 public interface MicroServiceOuvrages {
@@ -43,13 +44,11 @@ public interface MicroServiceOuvrages {
 	@GetMapping("/ouvrage/liste/rubrique/{rubrique}")
 	public List<OuvrageAux> tousLesOuvragesParRubrique(@PathVariable  String rubrique);
 	
-	/*
-	@PutMapping("/emprunts/save")
-	public void enregistrerEmprunt(@RequestBody Emprunt emprunt);
-	*/
-	
 	@PutMapping("/emprunts/save")
 	void enregistrerEmprunt(EmpruntAux empruntAux);
+	
+	@GetMapping("/ouvrage/emprunts/actifs/{id}")
+	public List<LigneEmprunt> empruntsActifs(@PathVariable  Integer id);
 	
 	
 }

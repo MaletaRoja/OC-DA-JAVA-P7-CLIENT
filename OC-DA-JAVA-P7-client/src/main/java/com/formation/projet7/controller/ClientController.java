@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.formation.projet7.constants.Constants;
 import com.formation.projet7.model.Emprunt;
 import com.formation.projet7.model.EmpruntAux;
 import com.formation.projet7.model.Exemplaire;
@@ -18,6 +19,7 @@ import com.formation.projet7.model.ExemplaireDispo;
 import com.formation.projet7.model.Ouvrage;
 import com.formation.projet7.model.OuvrageAux;
 import com.formation.projet7.model.Utilisateur;
+import com.formation.projet7.model.auxiliaire.LigneEmprunt;
 import com.formation.projet7.proxy.MicroServiceMail;
 import com.formation.projet7.proxy.MicroServiceOuvrages;
 import com.formation.projet7.service.EmpruntOuvrage;
@@ -54,7 +56,7 @@ public class ClientController {
 	@GetMapping("/connexion")
 	public String connexion(Model model) {
 		
-		Utilisateur utilisateur = new Utilisateur(1, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("authentification", true);
 		return "espace";
@@ -63,7 +65,7 @@ public class ClientController {
 	@GetMapping("/espace")
 	public String espace(Model model) {
 		
-		Utilisateur utilisateur = new Utilisateur(1, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("authentification", true);
 		return "espace";
@@ -73,7 +75,7 @@ public class ClientController {
 	public String listeOuvgrages(Model model) {
 		
 		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages();
-		Utilisateur utilisateur = new Utilisateur(1, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
 		List<Integer> nbreExemplairesDispos = pageOuvrage.exemplairesDisposParOuvrage(ouvrages);
 		model.addAttribute("ouvrages", ouvrages);
 		model.addAttribute("utilisateur", utilisateur);
@@ -114,9 +116,7 @@ public class ClientController {
 	public String listeExemplairesDisponibles() {
 		
 		List<Exemplaire> exemplaireDisponibles = microServiceOuvrages.ListerExemplairesDisponibles();
-		System.out.println("taille liste exemplaires dispo: " + exemplaireDisponibles.size());
-		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages();
-		System.out.println("taille liste ouvrages: " + ouvrages.size());
+		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages();	
 		return "rubriques";
 	}
 	
@@ -130,12 +130,25 @@ public class ClientController {
 		empruntAux.setNumero(id);
 		empruntAux.setRubrique(rubrique);
 		
-		System.out.println("id user" + empruntAux.getIdUser());
-		System.out.println("rubrique: " + empruntAux.getRubrique());
-		System.out.println("num" + empruntAux.getNumero());
 		microServiceOuvrages.enregistrerEmprunt(empruntAux);
 		
-		return "ok";
+		return Constants.PAGE_CONF_EMPRUNT;
+	}
+	
+	
+	@GetMapping("/emprunts/{id}")
+	public String voirEmprunts(@PathVariable("id") Integer id, Model model) {
+		
+		System.out.println("entrée get emprunts");
+		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsActifs(utilisateur.getId());
+		System.out.println("Taille des emprunts reçus: " +  emprunts.size());
+		model.addAttribute("utilisateur", utilisateur);
+		model.addAttribute("emprunts", emprunts);
+		model.addAttribute("historique", false);
+		model.addAttribute("authentification", true);
+		return Constants.EMPRUNTS;
+		//return "ok";
 	}
 	
 	// Simulation service mailing
