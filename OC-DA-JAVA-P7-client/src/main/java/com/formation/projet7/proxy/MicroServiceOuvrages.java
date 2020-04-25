@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.formation.projet7.model.Emprunt;
 import com.formation.projet7.model.EmpruntAux;
@@ -19,6 +20,9 @@ import com.formation.projet7.model.Ouvrage;
 import com.formation.projet7.model.OuvrageAux;
 import com.formation.projet7.model.Utilisateur;
 import com.formation.projet7.model.auxiliaire.LigneEmprunt;
+
+import feign.Body;
+import feign.Headers;
 
 @FeignClient(name="biblio-service", url="localhost:8081/biblio")
 public interface MicroServiceOuvrages {
@@ -54,6 +58,8 @@ public interface MicroServiceOuvrages {
 	public List<LigneEmprunt> empruntsHist(@PathVariable  Integer id);
 	
 	@GetMapping("/prolonger/{id}")
+	//void prolonger(@PathVariable  Integer id, @RequestHeader("authorization") String jwt);
 	void prolonger(@PathVariable  Integer id);
+	
 }
 

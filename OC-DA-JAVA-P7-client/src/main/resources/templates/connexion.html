@@ -43,8 +43,8 @@
 
 			<div class="col">
 
-				<form class="formulaire" th:action="@{/biblio/connexion}"
-					th:object="${user}" method="post">
+				<form class="formulaire" th:action="@{/biblio/client/connexion}"
+					th:object="${login}" method="post">
 					<div>
 						<h3 style="color: red;" th:if="${error}">Erreur! Vérifiez vous
 							identifiants de connexion</h3>
@@ -52,7 +52,7 @@
 					</div>
 					<div class="form-group">
 						<label for="email">Email</label> <input type="text"
-							class="form-control" name="username">
+							class="form-control" name="user">
 
 					</div>
 					<div class="form-group">

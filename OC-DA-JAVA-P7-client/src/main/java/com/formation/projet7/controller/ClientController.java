@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import com.formation.projet7.model.Emprunt;
 import com.formation.projet7.model.EmpruntAux;
 import com.formation.projet7.model.Exemplaire;
 import com.formation.projet7.model.ExemplaireDispo;
+import com.formation.projet7.model.Login;
 import com.formation.projet7.model.Ouvrage;
 import com.formation.projet7.model.OuvrageAux;
 import com.formation.projet7.model.Utilisateur;
@@ -61,6 +63,25 @@ public class ClientController {
 		model.addAttribute("authentification", true);
 		return "espace";
 	}
+	
+	/*
+	@GetMapping("/connexion")     // accès formulaire de connexion
+	public String connexion(Model model) {
+		
+		model.addAttribute("login", new Login());
+		
+		return "connexion";
+	}
+	*/
+	@PostMapping("/connexion")
+	public String demandeConnexion(Login login) {
+		
+		System.out.println("Username: " + login.getUser());
+		System.out.println("password: " + login.getPassword());
+		ResponseEntity<String> token = microServiceOuvrages.generate(login);
+		return "ok";
+	}
+	
 	
 	@GetMapping("/espace")
 	public String espace(Model model) {
