@@ -17,10 +17,10 @@ public class AuthController {
 	
 	@GetMapping("/connex")
 	public String testConnex() {
-		
+		/*
 		Login login = new Login("michel@gmail.com","michel");
 		ResponseEntity<String> token = microServiceOuvrages.generate(login);
-		
+		*/
 		return "ok";
 	}
 

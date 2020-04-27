@@ -21,11 +21,15 @@ import com.formation.projet7.model.Login;
 import com.formation.projet7.model.Ouvrage;
 import com.formation.projet7.model.OuvrageAux;
 import com.formation.projet7.model.Utilisateur;
+import com.formation.projet7.model.UtilisateurAux;
 import com.formation.projet7.model.auxiliaire.LigneEmprunt;
 import com.formation.projet7.proxy.MicroServiceMail;
 import com.formation.projet7.proxy.MicroServiceOuvrages;
 import com.formation.projet7.service.EmpruntOuvrage;
 import com.formation.projet7.service.PageOuvrage;
+import com.formation.projet7.service.UserConnexion;
+
+import ch.qos.logback.classic.pattern.Util;
 
 @Controller
 @RequestMapping("/biblio/client")
@@ -43,6 +47,9 @@ public class ClientController {
 	@Autowired
 	EmpruntOuvrage empruntOuvrage;
 	
+	@Autowired
+	UserConnexion userConnexion;
+	
 	@GetMapping("/")
 	public String accueil() {
 		
@@ -55,33 +62,43 @@ public class ClientController {
 		return "presentation";
 	}
 	
-	@GetMapping("/connexion")
-	public String connexion(Model model) {
-		
-		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
-		model.addAttribute("utilisateur", utilisateur);
-		model.addAttribute("authentification", true);
-		return "espace";
-	}
 	
-	/*
-	@GetMapping("/connexion")     // accès formulaire de connexion
+	@GetMapping("/connexion")     // Accès formulaire de connexion
 	public String connexion(Model model) {
 		
 		model.addAttribute("login", new Login());
 		
 		return "connexion";
 	}
-	*/
-	@PostMapping("/connexion")
-	public String demandeConnexion(Login login) {
+	
+	@PostMapping("/connexion")  // Traitement formulaire de connexion
+	public String demandeConnexion(Login login, Model model) {
 		
-		System.out.println("Username: " + login.getUser());
-		System.out.println("password: " + login.getPassword());
-		ResponseEntity<String> token = microServiceOuvrages.generate(login);
-		return "ok";
+		
+		Utilisateur utilisateur = userConnexion.identifierUtilisateur(login);
+		model.addAttribute("utilisateur", utilisateur);
+		model.addAttribute("authentification", true);
+		
+		return "espace";
 	}
 	
+	
+	// Test sécurité
+	
+	@GetMapping("/access")
+	public String access() {
+		
+		ResponseEntity<List <String>> dataBody = (ResponseEntity<List<String>>) microServiceOuvrages.getInformacionBancaria();
+		List<String> datas = dataBody.getBody();
+		String data = datas.get(0);
+		
+		for (int i=0; i<datas.size(); i++) {
+		System.out.println("data, " + i +" :" + datas.get(i));
+		}
+		
+		return "ok";
+		
+	}
 	
 	@GetMapping("/espace")
 	public String espace(Model model) {

@@ -19,6 +19,7 @@ import com.formation.projet7.model.Login;
 import com.formation.projet7.model.Ouvrage;
 import com.formation.projet7.model.OuvrageAux;
 import com.formation.projet7.model.Utilisateur;
+import com.formation.projet7.model.UtilisateurAux;
 import com.formation.projet7.model.auxiliaire.LigneEmprunt;
 
 import feign.Body;
@@ -42,9 +43,6 @@ public interface MicroServiceOuvrages {
 	@GetMapping("/exemplaire/disponibles/{id}")
 	public List<Exemplaire> ListerExemplairesDisponiblesParOuvrage(@PathVariable("id") Integer id);
 
-	@PostMapping("/connexion/")
-	public ResponseEntity<String> generate(@RequestBody final Login login);
-	
 	@GetMapping("/ouvrage/liste/rubrique/{rubrique}")
 	public List<OuvrageAux> tousLesOuvragesParRubrique(@PathVariable  String rubrique);
 	
@@ -60,6 +58,25 @@ public interface MicroServiceOuvrages {
 	@GetMapping("/prolonger/{id}")
 	//void prolonger(@PathVariable  Integer id, @RequestHeader("authorization") String jwt);
 	void prolonger(@PathVariable  Integer id);
+	
+	
+	
+	// ***************************************************
+	
+	/*
+	@PostMapping("/connexion/")
+	public ResponseEntity<String> generate(@RequestBody final Login login);
+	*/
+	
+	@PostMapping("connexion/")
+	public ResponseEntity<UtilisateurAux> generate(@RequestBody final Login login);
+	
+	
+	//****************************************************
+	// test securité
+	
+	@GetMapping("/access")
+	public ResponseEntity<?> getInformacionBancaria();
 	
 }
 
