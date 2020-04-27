@@ -28,7 +28,6 @@ import com.formation.projet7.model.UtilisateurAux;
 import com.formation.projet7.model.auxiliaire.LigneEmprunt;
 import com.formation.projet7.proxy.MicroServiceMail;
 import com.formation.projet7.proxy.MicroServiceOuvrages;
-import com.formation.projet7.service.EmpruntOuvrage;
 import com.formation.projet7.service.PageOuvrage;
 import com.formation.projet7.service.UserConnexion;
 
@@ -46,9 +45,6 @@ public class ClientController {
 	
 	@Autowired
 	PageOuvrage pageOuvrage;
-	
-	@Autowired
-	EmpruntOuvrage empruntOuvrage;
 	
 	@Autowired
 	UserConnexion userConnexion;
