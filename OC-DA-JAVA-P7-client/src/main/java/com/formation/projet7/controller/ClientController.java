@@ -301,9 +301,9 @@ public class ClientController {
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		
-		session.removeAttribute("USER");
-		session.removeAttribute("TOKEN");
-		
+		//session.removeAttribute("USER");
+		//session.removeAttribute("TOKEN");
+		session.invalidate();
 		return Constants.PAGE_ACCUEIL;
 	}
 	
