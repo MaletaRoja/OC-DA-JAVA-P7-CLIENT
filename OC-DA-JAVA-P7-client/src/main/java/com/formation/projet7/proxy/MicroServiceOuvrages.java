@@ -74,7 +74,7 @@ public interface MicroServiceOuvrages {
 	
 	//****************************************************
 	
-	@PutMapping("compte/")
+	@PostMapping("compte/")
 	public void creerCompte (UtilisateurAux user);
 	
 	//****************************************************
