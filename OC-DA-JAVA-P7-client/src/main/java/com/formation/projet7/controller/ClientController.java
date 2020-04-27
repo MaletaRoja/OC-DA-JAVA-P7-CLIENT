@@ -25,6 +25,7 @@ import com.formation.projet7.model.Ouvrage;
 import com.formation.projet7.model.OuvrageAux;
 import com.formation.projet7.model.Utilisateur;
 import com.formation.projet7.model.UtilisateurAux;
+import com.formation.projet7.model.auxiliaire.FormCompte;
 import com.formation.projet7.model.auxiliaire.LigneEmprunt;
 import com.formation.projet7.proxy.MicroServiceMail;
 import com.formation.projet7.proxy.MicroServiceOuvrages;
@@ -304,6 +305,29 @@ public class ClientController {
 		session.removeAttribute("TOKEN");
 		
 		return "index";
+	}
+	
+	@GetMapping("/compte")   // Accès formulaire de création de compte
+	public String compte(Model model) {
+		
+		FormCompte formCompte = new FormCompte();
+		model.addAttribute("formCompte", formCompte);
+		return "compte";
+	}
+	
+	@PostMapping("/compte")  // Création du compte
+	public String creationCompte(Model model, FormCompte formCompte) {
+		
+		UtilisateurAux utilisateurAux = new UtilisateurAux();
+		utilisateurAux.setPrenom(formCompte.getPrenom());
+		utilisateurAux.setNom(formCompte.getNom());
+		utilisateurAux.setToken(formCompte.getPassword());
+		utilisateurAux.setUsername(formCompte.getUsername());
+		utilisateurAux.setRole("USER");
+		
+		microServiceOuvrages.creerCompte(utilisateurAux);
+		
+		return "ok";
 	}
 	
 	// Simulation service mailing

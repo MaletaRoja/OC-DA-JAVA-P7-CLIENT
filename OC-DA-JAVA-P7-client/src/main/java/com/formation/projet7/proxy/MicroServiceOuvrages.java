@@ -73,6 +73,11 @@ public interface MicroServiceOuvrages {
 	
 	
 	//****************************************************
+	
+	@PutMapping("compte/")
+	public void creerCompte (UtilisateurAux user);
+	
+	//****************************************************
 	// test securité
 	
 	@GetMapping("/access")
