@@ -1,8 +1,11 @@
 package com.formation.projet7.service;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.formation.projet7.model.Login;
 import com.formation.projet7.model.Utilisateur;
@@ -16,7 +19,7 @@ public class UserConnexion {
 	MicroServiceOuvrages microServiceOuvrages;
 	
 	
-	public Utilisateur identifierUtilisateur(Login login) {
+	public Utilisateur identifierUtilisateur(Login login, HttpSession session) {
 		
 		
 		System.out.println("Username: " + login.getUser());
@@ -37,6 +40,29 @@ public class UserConnexion {
 		
 		String token = userAux.getToken();
 		
+		session.setAttribute("USER", utilisateur);
+		session.setAttribute("TOKEN", token);
+		
+		
+		return utilisateur;
+		
+	}
+	
+	public Utilisateur obtenirUtilisateur (HttpSession session, Model model) {
+		
+		Utilisateur utilisateur = (Utilisateur) session.getAttribute("USER");
+		if (utilisateur == null) {
+			
+			System.out.println("aucun utilisateur");
+			model.addAttribute("authentification", false);
+			
+		}else {
+			
+			System.out.println("Nom de utilisateur session: " + utilisateur.getNom());
+			model.addAttribute("utilisateur", utilisateur);
+			model.addAttribute("authentification", true);
+			
+		}
 		return utilisateur;
 		
 	}

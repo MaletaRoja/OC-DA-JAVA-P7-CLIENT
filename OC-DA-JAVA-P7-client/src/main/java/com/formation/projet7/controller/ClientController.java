@@ -3,6 +3,9 @@ package com.formation.projet7.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -51,14 +54,16 @@ public class ClientController {
 	UserConnexion userConnexion;
 	
 	@GetMapping("/")
-	public String accueil() {
+	public String accueil(Model model, HttpSession session) {
 		
+		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		return "index";
 	}
 	
 	@GetMapping("/presentation")
-	public String presentation() {
+	public String presentation(HttpSession session, Model model) {
 		
+		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		return "presentation";
 	}
 	
@@ -72,10 +77,9 @@ public class ClientController {
 	}
 	
 	@PostMapping("/connexion")  // Traitement formulaire de connexion
-	public String demandeConnexion(Login login, Model model) {
+	public String demandeConnexion(Login login, Model model, HttpSession session) {
 		
-		
-		Utilisateur utilisateur = userConnexion.identifierUtilisateur(login);
+		Utilisateur utilisateur = userConnexion.identifierUtilisateur(login, session);
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("authentification", true);
 		
@@ -101,19 +105,17 @@ public class ClientController {
 	}
 	
 	@GetMapping("/espace")
-	public String espace(Model model) {
+	public String espace(Model model, HttpSession session) {
 		
-		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
-		model.addAttribute("utilisateur", utilisateur);
-		model.addAttribute("authentification", true);
+		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		return "espace";
 	}
 	
 	@GetMapping("/ouvrages")
-	public String listeOuvgrages(Model model) {
+	public String listeOuvgrages(Model model, HttpSession session) {
 		
 		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages();
-		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		List<Integer> nbreExemplairesDispos = pageOuvrage.exemplairesDisposParOuvrage(ouvrages);
 		model.addAttribute("ouvrages", ouvrages);
 		model.addAttribute("utilisateur", utilisateur);
@@ -125,10 +127,10 @@ public class ClientController {
 	
 	
 	@GetMapping("/rubriques")     // Demande choix de rubrique pour affichage des ouvrages correspondants
-	public String rubriques(Model model) {
+	public String rubriques(Model model, HttpSession session) {
 		
 		List<String> genres = microServiceOuvrages.toutesLesRubriques();
-		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		model.addAttribute("genres", genres);
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("authentification", true);
@@ -136,10 +138,10 @@ public class ClientController {
 	}
 	
 	@PostMapping("/rubriques")    // Affichage des ouvrages par rubrique/genre
-	public String choixRubrique(String rubrique, Model model) {
+	public String choixRubrique(String rubrique, Model model, HttpSession session) {
 		
 		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvragesParRubrique(rubrique);
-		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		List<Integer> nbreExemplairesDispos = pageOuvrage.exemplairesDisposParOuvrage(ouvrages);
 		model.addAttribute("ouvrages", ouvrages);
 		model.addAttribute("rubrique", rubrique);
@@ -160,9 +162,11 @@ public class ClientController {
 	
 	@GetMapping("/emprunter/{id}/{rubrique}")
 	public String emprunter(@PathVariable("id") Integer id
-		, @PathVariable("rubrique") String rubrique, Model model) {
+		, @PathVariable("rubrique") String rubrique
+		, Model model
+		,HttpSession session) {
 		
-		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		EmpruntAux empruntAux = new EmpruntAux();
 		empruntAux.setIdUser(utilisateur.getId());
 		empruntAux.setNumero(id);
@@ -175,10 +179,12 @@ public class ClientController {
 	
 	
 	@GetMapping("/emprunts/{id}")
-	public String voirEmprunts(@PathVariable("id") Integer id, Model model) {
+	public String voirEmprunts(@PathVariable("id") Integer id
+			, Model model
+			,HttpSession session) {
 		
 		
-		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsActifs(utilisateur.getId());
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("emprunts", emprunts);
@@ -189,9 +195,11 @@ public class ClientController {
 	}
 	
 	@GetMapping("/emprunts/historique/{id}")
-	public String voirTousEmprunts(@PathVariable("id") Integer id, Model model) {
+	public String voirTousEmprunts(@PathVariable("id") Integer id
+			, Model model
+			, HttpSession session) {
 		
-		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsHist(utilisateur.getId());
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("emprunts", emprunts);
@@ -202,9 +210,11 @@ public class ClientController {
 	}
 	
 	@GetMapping("/prolonger/{id}")
-	public String prolonger(@PathVariable("id") Integer id, Model model) {
+	public String prolonger(@PathVariable("id") Integer id
+			, Model model
+			, HttpSession session) {
 		
-		Utilisateur utilisateur = new Utilisateur(22, "Lopez", "Michel", "michel@gmail.com", "michel", true, null, null);
+		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsActifs(utilisateur.getId());
 		LigneEmprunt emprunt = emprunts.get(id);
 		Integer idExemplaire = emprunt.getId();
