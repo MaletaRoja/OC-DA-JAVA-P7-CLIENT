@@ -67,8 +67,7 @@ public class ClientController {
 	@GetMapping("/connexion")     // Accès formulaire de connexion
 	public String connexion(Model model) {
 		
-		model.addAttribute("login", new Login());
-		
+		model.addAttribute("login", new Login());	
 		return "connexion";
 	}
 	
@@ -104,7 +103,15 @@ public class ClientController {
 	public String espace(Model model, HttpSession session) {
 		
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
-		return "espace";
+		if (utilisateur == null) {
+
+			return "connexion";
+			
+		}else {
+			
+			return "espace";
+		}
+		
 	}
 	
 	@GetMapping("/ouvrages")
@@ -112,6 +119,12 @@ public class ClientController {
 		
 		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages();
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
+		if (utilisateur == null) {
+
+			return "connexion";
+			
+		}else {
+			
 		List<Integer> nbreExemplairesDispos = pageOuvrage.exemplairesDisposParOuvrage(ouvrages);
 		model.addAttribute("ouvrages", ouvrages);
 		model.addAttribute("utilisateur", utilisateur);
@@ -119,6 +132,8 @@ public class ClientController {
 		model.addAttribute("nbreExemplairesDispos", nbreExemplairesDispos);
 		model.addAttribute("rubrique", "toutes");
 		return "ouvrages";
+		
+		}
 	}
 	
 	
@@ -127,10 +142,19 @@ public class ClientController {
 		
 		List<String> genres = microServiceOuvrages.toutesLesRubriques();
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
+		
+		if (utilisateur == null) {
+
+			return "connexion";
+			
+		}else {
+			
 		model.addAttribute("genres", genres);
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("authentification", true);
 		return "rubriques";
+		
+		}
 	}
 	
 	@PostMapping("/rubriques")    // Affichage des ouvrages par rubrique/genre
@@ -138,6 +162,12 @@ public class ClientController {
 		
 		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvragesParRubrique(rubrique);
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
+		
+		if (utilisateur == null) {
+
+			return "connexion";
+			
+		}else {
 		List<Integer> nbreExemplairesDispos = pageOuvrage.exemplairesDisposParOuvrage(ouvrages);
 		model.addAttribute("ouvrages", ouvrages);
 		model.addAttribute("rubrique", rubrique);
@@ -146,14 +176,25 @@ public class ClientController {
 		model.addAttribute("nbreExemplairesDispos", nbreExemplairesDispos);
 		return "ouvrages";
 		
+		}
+		
 	}
 	
 	@GetMapping("/exemplaire/disponibles")
-	public String listeExemplairesDisponibles() {
+	public String listeExemplairesDisponibles(Model model, HttpSession session) {
 		
 		List<Exemplaire> exemplaireDisponibles = microServiceOuvrages.ListerExemplairesDisponibles();
 		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages();	
+		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
+		if (utilisateur == null) {
+
+			return "connexion";
+			
+		}else {
+			
 		return "rubriques";
+		
+		}
 	}
 	
 	@GetMapping("/emprunter/{id}/{rubrique}")
@@ -163,6 +204,12 @@ public class ClientController {
 		,HttpSession session) {
 		
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
+		
+		if (utilisateur == null) {
+
+			return "connexion";
+			
+		}else {
 		EmpruntAux empruntAux = new EmpruntAux();
 		empruntAux.setIdUser(utilisateur.getId());
 		empruntAux.setNumero(id);
@@ -171,6 +218,8 @@ public class ClientController {
 		microServiceOuvrages.enregistrerEmprunt(empruntAux);
 		model.addAttribute("enregistrement", true);
 		return Constants.CONFIRMATION;
+		
+		}
 	}
 	
 	
@@ -181,12 +230,21 @@ public class ClientController {
 		
 		
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
+		
+		if (utilisateur == null) {
+
+			return "connexion";
+			
+		}else {
+			
 		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsActifs(utilisateur.getId());
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("emprunts", emprunts);
 		model.addAttribute("historique", false);
 		model.addAttribute("authentification", true);
 		return Constants.EMPRUNTS;
+		
+		}
 		
 	}
 	
@@ -196,12 +254,21 @@ public class ClientController {
 			, HttpSession session) {
 		
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
+		
+		if (utilisateur == null) {
+
+			return "connexion";
+			
+		}else {
+			
 		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsHist(utilisateur.getId());
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("emprunts", emprunts);
 		model.addAttribute("historique", true);
 		model.addAttribute("authentification", true);
 		return Constants.EMPRUNTS;
+		
+		}
 		
 	}
 	
@@ -211,6 +278,13 @@ public class ClientController {
 			, HttpSession session) {
 		
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
+		
+		if (utilisateur == null) {
+
+			return "connexion";
+			
+		}else {
+			
 		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsActifs(utilisateur.getId());
 		LigneEmprunt emprunt = emprunts.get(id);
 		Integer idExemplaire = emprunt.getId();
@@ -219,6 +293,17 @@ public class ClientController {
 		model.addAttribute("authentification", true);
 		model.addAttribute("enregistrement", false);
 		return Constants.CONFIRMATION;
+		
+		}
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		
+		session.removeAttribute("USER");
+		session.removeAttribute("TOKEN");
+		
+		return "index";
 	}
 	
 	// Simulation service mailing

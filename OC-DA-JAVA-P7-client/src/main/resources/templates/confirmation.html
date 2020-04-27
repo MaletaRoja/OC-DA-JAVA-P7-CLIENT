@@ -45,11 +45,10 @@
 				<span th:if="${enregistrement}">
 
 					<h3 class="mt-2">Votre demande d'emprunt à été enregistré</h3>
-				</span>
-				
-				<span th:unless="${enregistrement}">
+				</span> <span th:unless="${enregistrement}">
 
-					<h3 class="mt-2">Votre emprunt est prolongé de quatres semaines</h3>
+					<h3 class="mt-2">Votre emprunt est prolongé de quatres
+						semaines</h3>
 				</span>
 
 
@@ -74,15 +73,15 @@
 		</div>
 
 
+		<!-- PIED DE PAGE -->
+
+		<div th:replace="fragments/footer :: footer"></div>
+
+		<!-- ********************************************* -->
 
 	</div>
 
 
-	<!-- PIED DE PAGE -->
-
-	<div th:replace="fragments/footer :: footer"></div>
-
-	<!-- ********************************************* -->
 
 
 	</div>

@@ -21,7 +21,6 @@ public class UserConnexion {
 	
 	public Utilisateur identifierUtilisateur(Login login, HttpSession session) {
 		
-		
 		System.out.println("Username: " + login.getUser());
 		System.out.println("password: " + login.getPassword());
 		//ResponseEntity<String> tokenBody = microServiceOuvrages.generate(login);
