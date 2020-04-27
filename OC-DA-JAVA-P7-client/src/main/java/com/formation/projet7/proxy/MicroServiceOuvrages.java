@@ -56,17 +56,11 @@ public interface MicroServiceOuvrages {
 	public List<LigneEmprunt> empruntsHist(@PathVariable  Integer id);
 	
 	@GetMapping("/prolonger/{id}")
-	//void prolonger(@PathVariable  Integer id, @RequestHeader("authorization") String jwt);
+	
 	void prolonger(@PathVariable  Integer id);
-	
-	
 	
 	// ***************************************************
 	
-	/*
-	@PostMapping("/connexion/")
-	public ResponseEntity<String> generate(@RequestBody final Login login);
-	*/
 	
 	@PostMapping("connexion/")
 	public ResponseEntity<UtilisateurAux> generate(@RequestBody final Login login);

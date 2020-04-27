@@ -42,7 +42,6 @@ public class UserConnexion {
 		session.setAttribute("USER", utilisateur);
 		session.setAttribute("TOKEN", token);
 		
-		
 		return utilisateur;
 		
 	}

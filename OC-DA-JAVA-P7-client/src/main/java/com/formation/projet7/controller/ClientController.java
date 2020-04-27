@@ -327,7 +327,8 @@ public class ClientController {
 		
 		microServiceOuvrages.creerCompte(utilisateurAux);
 		
-		return "ok";
+		
+		return "connexion";
 	}
 	
 	// Simulation service mailing
