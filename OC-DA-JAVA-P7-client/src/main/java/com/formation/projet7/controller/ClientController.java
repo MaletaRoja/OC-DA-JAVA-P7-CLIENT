@@ -54,14 +54,14 @@ public class ClientController {
 	public String accueil(Model model, HttpSession session) {
 		
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
-		return "index";
+		return Constants.PAGE_ACCUEIL;
 	}
 	
 	@GetMapping("/presentation")
 	public String presentation(HttpSession session, Model model) {
 		
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
-		return "presentation";
+		return Constants.PAGE_PRESENTATION;
 	}
 	
 	
@@ -69,7 +69,7 @@ public class ClientController {
 	public String connexion(Model model) {
 		
 		model.addAttribute("login", new Login());	
-		return "connexion";
+		return Constants.PAGE_CONNEXION;
 	}
 	
 	@PostMapping("/connexion")  // Traitement formulaire de connexion
@@ -79,7 +79,7 @@ public class ClientController {
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("authentification", true);
 		
-		return "espace";
+		return Constants.ESPACE_PERSONEL;
 	}
 	
 	
@@ -106,11 +106,11 @@ public class ClientController {
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		if (utilisateur == null) {
 
-			return "connexion";
+			return Constants.PAGE_CONNEXION;
 			
 		}else {
 			
-			return "espace";
+			return Constants.ESPACE_PERSONEL;
 		}
 		
 	}
@@ -122,7 +122,7 @@ public class ClientController {
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		if (utilisateur == null) {
 
-			return "connexion";
+			return Constants.PAGE_CONNEXION;
 			
 		}else {
 			
@@ -132,7 +132,7 @@ public class ClientController {
 		model.addAttribute("authentification", true);
 		model.addAttribute("nbreExemplairesDispos", nbreExemplairesDispos);
 		model.addAttribute("rubrique", "toutes");
-		return "ouvrages";
+		return Constants.OUVRAGES;
 		
 		}
 	}
@@ -146,14 +146,14 @@ public class ClientController {
 		
 		if (utilisateur == null) {
 
-			return "connexion";
+			return Constants.PAGE_CONNEXION;
 			
 		}else {
 			
 		model.addAttribute("genres", genres);
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("authentification", true);
-		return "rubriques";
+		return Constants.RUBRIQUES;
 		
 		}
 	}
@@ -166,7 +166,7 @@ public class ClientController {
 		
 		if (utilisateur == null) {
 
-			return "connexion";
+			return Constants.PAGE_CONNEXION;
 			
 		}else {
 		List<Integer> nbreExemplairesDispos = pageOuvrage.exemplairesDisposParOuvrage(ouvrages);
@@ -175,7 +175,7 @@ public class ClientController {
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("authentification", true);
 		model.addAttribute("nbreExemplairesDispos", nbreExemplairesDispos);
-		return "ouvrages";
+		return Constants.OUVRAGES;
 		
 		}
 		
@@ -189,11 +189,11 @@ public class ClientController {
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		if (utilisateur == null) {
 
-			return "connexion";
+			return Constants.PAGE_CONNEXION;
 			
 		}else {
 			
-		return "rubriques";
+		return Constants.RUBRIQUES;
 		
 		}
 	}
@@ -208,7 +208,7 @@ public class ClientController {
 		
 		if (utilisateur == null) {
 
-			return "connexion";
+			return Constants.PAGE_CONNEXION;
 			
 		}else {
 		EmpruntAux empruntAux = new EmpruntAux();
@@ -234,7 +234,7 @@ public class ClientController {
 		
 		if (utilisateur == null) {
 
-			return "connexion";
+			return Constants.PAGE_CONNEXION;
 			
 		}else {
 			
@@ -258,7 +258,7 @@ public class ClientController {
 		
 		if (utilisateur == null) {
 
-			return "connexion";
+			return Constants.PAGE_CONNEXION;
 			
 		}else {
 			
@@ -282,7 +282,7 @@ public class ClientController {
 		
 		if (utilisateur == null) {
 
-			return "connexion";
+			return Constants.PAGE_CONNEXION;
 			
 		}else {
 			
@@ -304,7 +304,7 @@ public class ClientController {
 		session.removeAttribute("USER");
 		session.removeAttribute("TOKEN");
 		
-		return "index";
+		return Constants.PAGE_ACCUEIL;
 	}
 	
 	@GetMapping("/compte")   // Accès formulaire de création de compte
@@ -312,7 +312,7 @@ public class ClientController {
 		
 		FormCompte formCompte = new FormCompte();
 		model.addAttribute("formCompte", formCompte);
-		return "compte";
+		return Constants.CREATION_COMPTE;
 	}
 	
 	@PostMapping("/compte")  // Création du compte
@@ -328,7 +328,7 @@ public class ClientController {
 		microServiceOuvrages.creerCompte(utilisateurAux);
 		
 		
-		return "connexion";
+		return Constants.PAGE_CONNEXION;
 	}
 	
 	// Simulation service mailing
