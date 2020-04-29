@@ -27,7 +27,7 @@ public class UserConnexion {
 		ResponseEntity<UtilisateurAux> userBody = microServiceOuvrages.generate(login);
 		//String token = tokenBody.getBody();
 		UtilisateurAux userAux = userBody.getBody();
-		//System.out.println("Token: " + token );
+		System.out.println("Token: " + userAux.getToken() );
 		System.out.println("Nom de l'utilisateur récupéré: " + userAux.getNom());
 		
 		// 

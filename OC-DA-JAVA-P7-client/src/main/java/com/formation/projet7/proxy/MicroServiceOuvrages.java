@@ -1,6 +1,9 @@
 package com.formation.projet7.proxy;
 
+
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +32,7 @@ import feign.Headers;
 public interface MicroServiceOuvrages {
 	
 	@GetMapping("/ouvrage/liste")
-	List<OuvrageAux> tousLesOuvrages();
+	List<OuvrageAux> tousLesOuvrages(HttpServletRequest request);
 	
 	@GetMapping("/ouvrage/{id}")
 	ResponseEntity<?> unOuvrage(@PathVariable("id") Integer id);

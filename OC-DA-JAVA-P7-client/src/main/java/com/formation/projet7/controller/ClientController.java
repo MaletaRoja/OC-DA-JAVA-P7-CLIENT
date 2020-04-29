@@ -116,9 +116,12 @@ public class ClientController {
 	}
 	
 	@GetMapping("/ouvrages")
-	public String listeOuvgrages(Model model, HttpSession session) {
+	public String listeOuvgrages(Model model, HttpSession session,HttpServletRequest request) {
 		
-		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages();
+		String token = (String) session.getAttribute("TOKEN");
+		token = "Bearer " + token;
+		request.setAttribute("TOKEN", token);
+		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages(request);
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		if (utilisateur == null) {
 
@@ -182,10 +185,13 @@ public class ClientController {
 	}
 	
 	@GetMapping("/exemplaire/disponibles")
-	public String listeExemplairesDisponibles(Model model, HttpSession session) {
+	public String listeExemplairesDisponibles(Model model, HttpSession session, HttpServletRequest request) {
 		
+		String token = (String) session.getAttribute("TOKEN");
+		token = "Bearer " + token;
+		request.setAttribute("TOKEN", token);
 		List<Exemplaire> exemplaireDisponibles = microServiceOuvrages.ListerExemplairesDisponibles();
-		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages();	
+		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages(request);	
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		if (utilisateur == null) {
 
