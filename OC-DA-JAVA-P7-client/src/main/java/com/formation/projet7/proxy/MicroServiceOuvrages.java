@@ -32,31 +32,31 @@ import feign.Headers;
 public interface MicroServiceOuvrages {
 	
 	@GetMapping("/ouvrage/liste")
-	List<OuvrageAux> tousLesOuvrages(HttpServletRequest request);
+	List<OuvrageAux> tousLesOuvrages(@RequestHeader("Authorization") String token);
 	
 	@GetMapping("/ouvrage/{id}")
-	ResponseEntity<?> unOuvrage(@PathVariable("id") Integer id);
+	ResponseEntity<?> unOuvrage(@PathVariable("id") Integer id, @RequestHeader("Authorization") String token);
 	
 	@GetMapping("/ouvrage/rubriques")
-	public List<String> toutesLesRubriques();
+	public List<String> toutesLesRubriques(@RequestHeader("Authorization") String token);
 	
 	@GetMapping("/exemplaire/disponibles")
-	public List<Exemplaire> ListerExemplairesDisponibles();
+	public List<Exemplaire> ListerExemplairesDisponibles(@RequestHeader("Authorization") String token);
 	
 	@GetMapping("/exemplaire/disponibles/{id}")
-	public List<Exemplaire> ListerExemplairesDisponiblesParOuvrage(@PathVariable("id") Integer id);
+	public List<Exemplaire> ListerExemplairesDisponiblesParOuvrage(@PathVariable("id") Integer id, @RequestHeader("Authorization") String token);
 
 	@GetMapping("/ouvrage/liste/rubrique/{rubrique}")
-	public List<OuvrageAux> tousLesOuvragesParRubrique(@PathVariable  String rubrique);
+	public List<OuvrageAux> tousLesOuvragesParRubrique(@PathVariable  String rubrique, @RequestHeader("Authorization") String token);
 	
 	@PutMapping("/emprunts/save")
-	void enregistrerEmprunt(EmpruntAux empruntAux);
+	void enregistrerEmprunt(EmpruntAux empruntAux, @RequestHeader("Authorization") String token);
 	
 	@GetMapping("/ouvrage/emprunts/actifs/{id}")
-	public List<LigneEmprunt> empruntsActifs(@PathVariable  Integer id);
+	public List<LigneEmprunt> empruntsActifs(@PathVariable  Integer id, @RequestHeader("Authorization") String token);
 	
 	@GetMapping("/ouvrage/emprunts/hist/{id}")
-	public List<LigneEmprunt> empruntsHist(@PathVariable  Integer id);
+	public List<LigneEmprunt> empruntsHist(@PathVariable  Integer id, @RequestHeader("Authorization") String token);
 	
 	@GetMapping("/prolonger/{id}")
 	
@@ -78,7 +78,7 @@ public interface MicroServiceOuvrages {
 	// test securité
 	
 	@GetMapping("/access")
-	public ResponseEntity<?> getInformacionBancaria();
+	public ResponseEntity<?> getInformacionBancaria(@RequestHeader("Authorization") String token);
 	
 }
 

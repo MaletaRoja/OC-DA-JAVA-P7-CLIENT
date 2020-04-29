@@ -86,9 +86,11 @@ public class ClientController {
 	// Test sécurité
 	
 	@GetMapping("/access")
-	public String access() {
+	public ResponseEntity<List <String>> access(HttpSession session) {
 		
-		ResponseEntity<List <String>> dataBody = (ResponseEntity<List<String>>) microServiceOuvrages.getInformacionBancaria();
+		String token = (String) session.getAttribute("TOKEN");
+		token = "Bearer " + token;
+		ResponseEntity<List <String>> dataBody = (ResponseEntity<List<String>>) microServiceOuvrages.getInformacionBancaria(token);
 		List<String> datas = dataBody.getBody();
 		String data = datas.get(0);
 		
@@ -96,7 +98,7 @@ public class ClientController {
 		System.out.println("data, " + i +" :" + datas.get(i));
 		}
 		
-		return "ok";
+		return dataBody;
 		
 	}
 	
@@ -116,12 +118,12 @@ public class ClientController {
 	}
 	
 	@GetMapping("/ouvrages")
-	public String listeOuvgrages(Model model, HttpSession session,HttpServletRequest request) {
+	public String listeOuvgrages(Model model, HttpSession session) {
 		
 		String token = (String) session.getAttribute("TOKEN");
 		token = "Bearer " + token;
-		request.setAttribute("TOKEN", token);
-		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages(request);
+		System.out.println("Token header: " + token);
+		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages(token);
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		if (utilisateur == null) {
 
@@ -144,7 +146,9 @@ public class ClientController {
 	@GetMapping("/rubriques")     // Demande choix de rubrique pour affichage des ouvrages correspondants
 	public String rubriques(Model model, HttpSession session) {
 		
-		List<String> genres = microServiceOuvrages.toutesLesRubriques();
+		String token = (String) session.getAttribute("TOKEN");
+		token = "Bearer " + token;
+		List<String> genres = microServiceOuvrages.toutesLesRubriques(token);
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		
 		if (utilisateur == null) {
@@ -164,7 +168,9 @@ public class ClientController {
 	@PostMapping("/rubriques")    // Affichage des ouvrages par rubrique/genre
 	public String choixRubrique(String rubrique, Model model, HttpSession session) {
 		
-		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvragesParRubrique(rubrique);
+		String token = (String) session.getAttribute("TOKEN");
+		token = "Bearer " + token;
+		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvragesParRubrique(rubrique, token);
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		
 		if (utilisateur == null) {
@@ -185,13 +191,12 @@ public class ClientController {
 	}
 	
 	@GetMapping("/exemplaire/disponibles")
-	public String listeExemplairesDisponibles(Model model, HttpSession session, HttpServletRequest request) {
+	public String listeExemplairesDisponibles(Model model, HttpSession session) {
 		
 		String token = (String) session.getAttribute("TOKEN");
 		token = "Bearer " + token;
-		request.setAttribute("TOKEN", token);
-		List<Exemplaire> exemplaireDisponibles = microServiceOuvrages.ListerExemplairesDisponibles();
-		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages(request);	
+		List<Exemplaire> exemplaireDisponibles = microServiceOuvrages.ListerExemplairesDisponibles(token);
+		List<OuvrageAux> ouvrages = microServiceOuvrages.tousLesOuvrages(token);	
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		if (utilisateur == null) {
 
@@ -211,7 +216,8 @@ public class ClientController {
 		,HttpSession session) {
 		
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
-		
+		String token = (String) session.getAttribute("TOKEN");
+		token = "Bearer " + token;
 		if (utilisateur == null) {
 
 			return Constants.PAGE_CONNEXION;
@@ -222,7 +228,7 @@ public class ClientController {
 		empruntAux.setNumero(id);
 		empruntAux.setRubrique(rubrique);
 		
-		microServiceOuvrages.enregistrerEmprunt(empruntAux);
+		microServiceOuvrages.enregistrerEmprunt(empruntAux, token);
 		model.addAttribute("enregistrement", true);
 		return Constants.CONFIRMATION;
 		
@@ -235,7 +241,8 @@ public class ClientController {
 			, Model model
 			,HttpSession session) {
 		
-		
+		String token = (String) session.getAttribute("TOKEN");
+		token = "Bearer " + token;
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		
 		if (utilisateur == null) {
@@ -244,7 +251,7 @@ public class ClientController {
 			
 		}else {
 			
-		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsActifs(utilisateur.getId());
+		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsActifs(utilisateur.getId(), token);
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("emprunts", emprunts);
 		model.addAttribute("historique", false);
@@ -260,6 +267,8 @@ public class ClientController {
 			, Model model
 			, HttpSession session) {
 		
+		String token = (String) session.getAttribute("TOKEN");
+		token = "Bearer " + token;
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		
 		if (utilisateur == null) {
@@ -268,7 +277,7 @@ public class ClientController {
 			
 		}else {
 			
-		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsHist(utilisateur.getId());
+		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsHist(utilisateur.getId(), token);
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("emprunts", emprunts);
 		model.addAttribute("historique", true);
@@ -284,6 +293,8 @@ public class ClientController {
 			, Model model
 			, HttpSession session) {
 		
+		String token = (String) session.getAttribute("TOKEN");
+		token = "Bearer " + token;
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		
 		if (utilisateur == null) {
@@ -292,7 +303,7 @@ public class ClientController {
 			
 		}else {
 			
-		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsActifs(utilisateur.getId());
+		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsActifs(utilisateur.getId(), token);
 		LigneEmprunt emprunt = emprunts.get(id);
 		Integer idExemplaire = emprunt.getId();
 		microServiceOuvrages.prolonger(idExemplaire);
