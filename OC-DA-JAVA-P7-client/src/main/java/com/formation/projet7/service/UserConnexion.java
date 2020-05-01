@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.client.HttpStatusCodeException;
 
 import com.formation.projet7.model.Login;
 import com.formation.projet7.model.Utilisateur;
