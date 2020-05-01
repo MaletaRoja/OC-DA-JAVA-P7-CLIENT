@@ -1,9 +1,7 @@
 package com.formation.projet7.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.formation.projet7.constants.Constants;
-import com.formation.projet7.model.Emprunt;
 import com.formation.projet7.model.EmpruntAux;
-import com.formation.projet7.model.EmpruntFormat;
 import com.formation.projet7.model.Exemplaire;
-import com.formation.projet7.model.ExemplaireDispo;
 import com.formation.projet7.model.Login;
-import com.formation.projet7.model.Ouvrage;
 import com.formation.projet7.model.OuvrageAux;
 import com.formation.projet7.model.Utilisateur;
 import com.formation.projet7.model.UtilisateurAux;
@@ -33,8 +28,6 @@ import com.formation.projet7.proxy.MicroServiceMail;
 import com.formation.projet7.proxy.MicroServiceOuvrages;
 import com.formation.projet7.service.PageOuvrage;
 import com.formation.projet7.service.UserConnexion;
-
-import ch.qos.logback.classic.pattern.Util;
 
 @Controller
 @RequestMapping("/biblio/client")
@@ -68,8 +61,13 @@ public class ClientController {
 	
 	
 	@GetMapping("/connexion")     // Accès formulaire de connexion
-	public String connexion(Model model) {
+	public String connexion(@RequestParam(name = "error", required = false) boolean error, Model model) {
 		
+		if (error) {
+			
+			model.addAttribute("login", new Login());	
+			model.addAttribute("error", true);
+		}
 		model.addAttribute("login", new Login());	
 		return Constants.PAGE_CONNEXION;
 	}
@@ -78,31 +76,19 @@ public class ClientController {
 	public String demandeConnexion(Login login, Model model, HttpSession session) {
 		
 		Utilisateur utilisateur = userConnexion.identifierUtilisateur(login, session);
+		
+		if (utilisateur != null) {
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("authentification", true);
 		
 		return Constants.ESPACE_PERSONEL;
-	}
-	
-	
-	// Test sécurité
-	
-	@GetMapping("/access")
-	public ResponseEntity<List <String>> access(HttpSession session) {
 		
-		String token = (String) session.getAttribute("TOKEN");
-		token = "Bearer " + token;
-		ResponseEntity<List <String>> dataBody = (ResponseEntity<List<String>>) microServiceOuvrages.getInformacionBancaria(token);
-		List<String> datas = dataBody.getBody();
-		String data = datas.get(0);
-		
-		for (int i=0; i<datas.size(); i++) {
-		System.out.println("data, " + i +" :" + datas.get(i));
+		} else {
+			
+			return "redirect:/biblio/client/connexion?error=true";
 		}
-		
-		return dataBody;
-		
 	}
+	
 	
 	@GetMapping("/espace")
 	public String espace(Model model, HttpSession session) {
@@ -322,8 +308,6 @@ public class ClientController {
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		
-		//session.removeAttribute("USER");
-		//session.removeAttribute("TOKEN");
 		session.invalidate();
 		return Constants.PAGE_ACCUEIL;
 	}
@@ -347,21 +331,8 @@ public class ClientController {
 		utilisateurAux.setRole("USER");
 		
 		microServiceOuvrages.creerCompte(utilisateurAux);
-		
-		
+			
 		return Constants.PAGE_CONNEXION;
 	}
 	
-	// Simulation service mailing
-	
-	@GetMapping("/mail")
-	public String mail() {
-		
-		microServiceMail.sendSimpleEmail();
-		
-		return "ok";
-	}
-	
-	
-
 }

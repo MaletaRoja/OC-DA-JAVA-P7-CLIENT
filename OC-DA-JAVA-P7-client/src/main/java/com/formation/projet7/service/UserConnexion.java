@@ -3,9 +3,11 @@ package com.formation.projet7.service;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import com.formation.projet7.model.Login;
 import com.formation.projet7.model.Utilisateur;
@@ -23,14 +25,16 @@ public class UserConnexion {
 		
 		System.out.println("Username: " + login.getUser());
 		System.out.println("password: " + login.getPassword());
-		//ResponseEntity<String> tokenBody = microServiceOuvrages.generate(login);
+		
+		try {
 		ResponseEntity<UtilisateurAux> userBody = microServiceOuvrages.generate(login);
-		//String token = tokenBody.getBody();
+		HttpStatus code = userBody.getStatusCode();
+		System.out.println("code status: " + code);
 		UtilisateurAux userAux = userBody.getBody();
 		System.out.println("Token: " + userAux.getToken() );
 		System.out.println("Nom de l'utilisateur récupéré: " + userAux.getNom());
 		
-		// 
+		
 		Utilisateur utilisateur = new Utilisateur();
 		utilisateur.setId(userAux.getId());
 		utilisateur.setNom(userAux.getNom());
@@ -43,7 +47,12 @@ public class UserConnexion {
 		session.setAttribute("TOKEN", token);
 		
 		return utilisateur;
-		
+		} catch (Exception e) {
+			
+			System.out.println("non autorisé");
+			return null;
+		}
+			
 	}
 	
 	public Utilisateur obtenirUtilisateur (HttpSession session, Model model) {
