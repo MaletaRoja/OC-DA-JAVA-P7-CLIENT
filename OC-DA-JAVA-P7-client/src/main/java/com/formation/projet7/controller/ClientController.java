@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.formation.projet7.constants.Constants;
 import com.formation.projet7.model.Emprunt;
 import com.formation.projet7.model.EmpruntAux;
+import com.formation.projet7.model.EmpruntFormat;
 import com.formation.projet7.model.Exemplaire;
 import com.formation.projet7.model.ExemplaireDispo;
 import com.formation.projet7.model.Login;
@@ -26,6 +27,7 @@ import com.formation.projet7.model.OuvrageAux;
 import com.formation.projet7.model.Utilisateur;
 import com.formation.projet7.model.UtilisateurAux;
 import com.formation.projet7.model.auxiliaire.FormCompte;
+import com.formation.projet7.model.auxiliaire.LigneEmprFormat;
 import com.formation.projet7.model.auxiliaire.LigneEmprunt;
 import com.formation.projet7.proxy.MicroServiceMail;
 import com.formation.projet7.proxy.MicroServiceOuvrages;
@@ -252,8 +254,9 @@ public class ClientController {
 		}else {
 			
 		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsActifs(utilisateur.getId(), token);
+		List<LigneEmprFormat> empruntsFormat = pageOuvrage.formatListeLigneEmprunts(emprunts);
 		model.addAttribute("utilisateur", utilisateur);
-		model.addAttribute("emprunts", emprunts);
+		model.addAttribute("emprunts", empruntsFormat);
 		model.addAttribute("historique", false);
 		model.addAttribute("authentification", true);
 		return Constants.EMPRUNTS;
@@ -278,8 +281,9 @@ public class ClientController {
 		}else {
 			
 		List<LigneEmprunt> emprunts = microServiceOuvrages.empruntsHist(utilisateur.getId(), token);
+		List<LigneEmprFormat> empruntsFormat = pageOuvrage.formatListeLigneEmprunts(emprunts);
 		model.addAttribute("utilisateur", utilisateur);
-		model.addAttribute("emprunts", emprunts);
+		model.addAttribute("emprunts", empruntsFormat);
 		model.addAttribute("historique", true);
 		model.addAttribute("authentification", true);
 		return Constants.EMPRUNTS;
