@@ -15,7 +15,5 @@ public class Constants {
 	public static final int DELAY_MIN = 5;
 	public static final String BEARER = "Bearer ";
 
-// Ajout commentaire
-
 
 }
