@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.formation.projet7.constants.Constants;
 import com.formation.projet7.model.EmpruntAux;
@@ -332,6 +333,61 @@ public class ClientController {
 		microServiceOuvrages.creerCompte(utilisateurAux);
 			
 		return Constants.PAGE_CONNEXION;
+	}
+	
+	@GetMapping("/compte/modifier")
+	public String modifierCompte(@RequestParam(name = "error", required = false) boolean error,Model model, HttpSession session) {
+		
+		Utilisateur utilisateur = (Utilisateur) session.getAttribute("USER");
+		FormCompte formCompte = new FormCompte();
+		formCompte.setNom(utilisateur.getNom());
+		formCompte.setPrenom(utilisateur.getPrenom());
+		formCompte.setUsername(utilisateur.getUsername());
+		model.addAttribute("formCompte", formCompte);
+		model.addAttribute("authentification", true);
+		model.addAttribute("utilisateur", utilisateur);
+		model.addAttribute("error", error);
+		
+		return "modifierCompte";
+	}
+	
+	@PostMapping("/compte/modifier")
+	public String enregitrementModification(Model model, HttpSession session, FormCompte formCompte) {
+		
+		String token = (String) session.getAttribute("TOKEN");
+		token = "Bearer " + token;
+		Utilisateur utilisateur = (Utilisateur) session.getAttribute("USER");
+		
+		UtilisateurAux utilisateurAux = new UtilisateurAux();
+		utilisateurAux.setId(utilisateur.getId());
+		utilisateurAux.setPrenom(formCompte.getPrenom());
+		utilisateurAux.setNom(formCompte.getNom());
+		
+		System.out.println("password récupéré: "+ formCompte.getPassword());
+		
+		if (!formCompte.getPassword().equals("")) {
+			
+			utilisateurAux.setToken(formCompte.getPassword());
+			System.out.println("chaine non vide!");
+			utilisateurAux.setUsername(formCompte.getUsername());
+			utilisateurAux.setRole("USER");
+			
+			utilisateur.setPrenom(formCompte.getPrenom());
+			utilisateur.setNom(formCompte.getNom());
+			
+			session.setAttribute("utilisateur", utilisateur);
+			
+			microServiceOuvrages.modifierCompte(utilisateur.getId(), token, utilisateurAux);
+			model.addAttribute("utilisateur", utilisateur);
+			model.addAttribute("authentification", true);
+			
+			return "espace";
+			
+		}else {
+			
+			return "redirect:/biblio/client/compte/modifier?error=true";
+		}
+		
 	}
 	
 }
