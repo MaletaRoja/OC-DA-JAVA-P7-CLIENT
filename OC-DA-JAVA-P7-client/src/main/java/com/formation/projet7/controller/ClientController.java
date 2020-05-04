@@ -348,7 +348,7 @@ public class ClientController {
 		model.addAttribute("utilisateur", utilisateur);
 		model.addAttribute("error", error);
 		
-		return "modifierCompte";
+		return Constants.MODIFIER_COMPTE;
 	}
 	
 	@PostMapping("/compte/modifier")
@@ -381,7 +381,7 @@ public class ClientController {
 			model.addAttribute("utilisateur", utilisateur);
 			model.addAttribute("authentification", true);
 			
-			return "espace";
+			return Constants.ESPACE_PERSONEL;
 			
 		}else {
 			
