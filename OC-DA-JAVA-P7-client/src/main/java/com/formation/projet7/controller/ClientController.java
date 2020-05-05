@@ -390,4 +390,15 @@ public class ClientController {
 		
 	}
 	
+	@PostMapping("/rechercher")
+	public String rechercheSimple(Model model, HttpSession session, String phrase) {
+		
+		String token = (String) session.getAttribute("TOKEN");
+		token = "Bearer " + token;
+		Utilisateur utilisateur = (Utilisateur) session.getAttribute("USER");
+		//List<OuvrageAux> ouvrages = microServiceOuvrages.rechercheSimple(token, phrase);
+		
+		return "ok";
+	}
+	
 }

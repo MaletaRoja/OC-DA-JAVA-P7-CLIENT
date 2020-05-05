@@ -64,23 +64,14 @@ public interface MicroServiceOuvrages {
 	@PutMapping("/modifier/compte/{id}")
 	public void modifierCompte(@PathVariable  Integer id, @RequestHeader("Authorization") String token, @RequestBody UtilisateurAux utilisateurAux);
 	
-	// ***************************************************
-	
-	
 	@PostMapping("connexion/")
 	public ResponseEntity<UtilisateurAux> generate(@RequestBody final Login login);
-	
-	
-	//****************************************************
-	
+		
 	@PostMapping("compte/")
 	public void creerCompte (UtilisateurAux user);
 	
-	//****************************************************
-	// test securité
-	
-	@GetMapping("/access")
-	public ResponseEntity<?> getInformacionBancaria(@RequestHeader("Authorization") String token);
+	@GetMapping("/recherche/simple")
+	public List<OuvrageAux> rechercheSimple(@RequestHeader("Authorization") String token, @PathVariable  String phrase);
 	
 }
 
