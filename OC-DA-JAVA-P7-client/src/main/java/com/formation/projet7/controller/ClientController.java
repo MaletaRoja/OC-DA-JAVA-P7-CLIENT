@@ -398,6 +398,12 @@ public class ClientController {
 		
 		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
 		
+		if (phrase.isEmpty()) {
+			
+			return "redirect:/biblio/client/";
+			
+		}else {
+			
 		List<OuvrageAux> ouvrages = microServiceOuvrages.rechercheSimple(token, phrase);
 		
 		List<Integer> nbreExemplairesDispos = pageOuvrage.exemplairesDisposParOuvrage(ouvrages);
@@ -407,6 +413,8 @@ public class ClientController {
 		model.addAttribute("rubrique", "toutes");
 		
 		return Constants.RECHERCHE;
+		
+		}
 	}
 	
 }
