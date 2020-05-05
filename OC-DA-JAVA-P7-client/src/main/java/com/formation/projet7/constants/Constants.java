@@ -12,6 +12,9 @@ public class Constants {
 	public static final String OUVRAGES = "ouvrages";
 	public static final String RUBRIQUES = "rubriques";
 	public static final String CONFIRMATION = "confirmation";
+	public static final String RECHERCHE = "recherche";
+	
+	
 	public static final int DELAY_MIN = 5;
 	public static final String BEARER = "Bearer ";
 
