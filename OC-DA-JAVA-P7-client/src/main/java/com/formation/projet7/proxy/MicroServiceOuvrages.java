@@ -70,7 +70,7 @@ public interface MicroServiceOuvrages {
 	@PostMapping("compte/")
 	public void creerCompte (UtilisateurAux user);
 	
-	@GetMapping("/recherche/simple")
+	@GetMapping("/recherche/simple/{phrase}")
 	public List<OuvrageAux> rechercheSimple(@RequestHeader("Authorization") String token, @PathVariable  String phrase);
 	
 }

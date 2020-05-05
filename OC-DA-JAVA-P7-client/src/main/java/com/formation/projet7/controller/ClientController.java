@@ -396,7 +396,7 @@ public class ClientController {
 		String token = (String) session.getAttribute("TOKEN");
 		token = "Bearer " + token;
 		Utilisateur utilisateur = (Utilisateur) session.getAttribute("USER");
-		//List<OuvrageAux> ouvrages = microServiceOuvrages.rechercheSimple(token, phrase);
+		List<OuvrageAux> ouvrages = microServiceOuvrages.rechercheSimple(token, phrase);
 		
 		return "ok";
 	}
