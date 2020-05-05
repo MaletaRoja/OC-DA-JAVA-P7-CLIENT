@@ -395,10 +395,25 @@ public class ClientController {
 		
 		String token = (String) session.getAttribute("TOKEN");
 		token = "Bearer " + token;
-		Utilisateur utilisateur = (Utilisateur) session.getAttribute("USER");
+		//Utilisateur utilisateur = (Utilisateur) session.getAttribute("USER");
+		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
+		
 		List<OuvrageAux> ouvrages = microServiceOuvrages.rechercheSimple(token, phrase);
 		
-		return "ok";
+		System.out.println("Taille liste ouvragesAux (recherche) depuis service : " + ouvrages.size());
+		
+		List<Integer> nbreExemplairesDispos = pageOuvrage.exemplairesDisposParOuvrage(ouvrages);
+		
+		System.out.println("Taille liste exemplairesDispo: " + nbreExemplairesDispos.size());
+		
+		//model.addAttribute("utilisateur", utilisateur);
+		
+		model.addAttribute("ouvrages", ouvrages);
+		model.addAttribute("nbreExemplairesDispos", nbreExemplairesDispos);
+		model.addAttribute("rubrique", "toutes");
+		
+		
+		return "recherche";
 	}
 	
 }
