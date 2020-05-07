@@ -28,7 +28,7 @@ import com.formation.projet7.model.auxiliaire.LigneEmprunt;
 import feign.Body;
 import feign.Headers;
 
-@FeignClient(name="biblioservice", url="localhost:8080/biblioservice")
+@FeignClient(name="biblioservice", url="localhost:8080/biblio-service")
 public interface MicroServiceOuvrages {
 	
 	@GetMapping("/ouvrage/liste")

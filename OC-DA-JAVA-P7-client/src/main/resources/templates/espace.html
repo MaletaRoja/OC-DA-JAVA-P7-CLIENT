@@ -13,7 +13,7 @@
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
 
-<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/biblio/css/styles.css">
  <link rel="shortcut icon" type="image/x-icon" href="/images/logo0.png" />
 <title>Bibliothèque</title>
 </head>
@@ -66,7 +66,7 @@
 
 
 				<div class="row d-flex justify-content-center">
-					<a href="/biblio/compte/modifier"><button type="button"
+					<a href="/compte/modifier"><button type="button"
 							class="btn mb-1 bouton2" style="background-color: #a32fa9; color: white;">Modifier</button></a>
 				</div>
 				
@@ -84,14 +84,14 @@
 				</div>
 				
 				<div class="row d-flex justify-content-center">
-					<a 	th:href="@{/biblio/client/emprunts/{id}(id=${utilisateur.id})}"><button type="button"
+					<a 	th:href="@{/client/emprunts/{id}(id=${utilisateur.id})}"><button type="button"
 								
 							class="btn mb-1 bouton2" style="background-color: #a32fa9; color: white;">Emprunts en cours</button></a>
 				</div>
 
 
 				<div class="row d-flex justify-content-center">
-					<a 	th:href="@{/biblio/client/emprunts/historique/{id}(id=${utilisateur.id})}"><button type="button"
+					<a 	th:href="@{/client/emprunts/historique/{id}(id=${utilisateur.id})}"><button type="button"
 							class="btn mb-1 bouton2" style="background-color: #a32fa9; color: white;">Historique des emprunts</button></a>
 				</div>
 				
