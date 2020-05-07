@@ -319,19 +319,70 @@ public class ClientController {
 		return Constants.CREATION_COMPTE;
 	}
 	
-	@PostMapping("/compte")  // Création du compte
-	public String creationCompte(Model model, FormCompte formCompte) {
+	@PostMapping("/compte/modifier")
+	public String enregitrementModification(Model model, HttpSession session, FormCompte formCompte) {
+		
+		String token = (String) session.getAttribute("TOKEN");
+		token = "Bearer " + token;
+		Utilisateur utilisateur = (Utilisateur) session.getAttribute("USER");
 		
 		UtilisateurAux utilisateurAux = new UtilisateurAux();
+		utilisateurAux.setId(utilisateur.getId());
 		utilisateurAux.setPrenom(formCompte.getPrenom());
 		utilisateurAux.setNom(formCompte.getNom());
-		utilisateurAux.setToken(formCompte.getPassword());
-		utilisateurAux.setUsername(formCompte.getUsername());
-		utilisateurAux.setRole("USER");
 		
-		microServiceOuvrages.creerCompte(utilisateurAux);
+		System.out.println("password récupéré: "+ formCompte.getPassword());
+		
+		if (!formCompte.getPassword().equals("")) {
 			
-		return Constants.PAGE_CONNEXION;
+			utilisateurAux.setToken(formCompte.getPassword());
+			System.out.println("chaine non vide!");
+			utilisateurAux.setUsername(formCompte.getUsername());
+			utilisateurAux.setRole("USER");
+			
+			utilisateur.setPrenom(formCompte.getPrenom());
+			utilisateur.setNom(formCompte.getNom());
+			
+			session.setAttribute("utilisateur", utilisateur);
+			
+			microServiceOuvrages.modifierCompte(utilisateur.getId(), token, utilisateurAux);
+			model.addAttribute("utilisateur", utilisateur);
+			model.addAttribute("authentification", true);
+			
+			return Constants.ESPACE_PERSONEL;
+			
+		}else {
+			
+			return "redirect:/biblio/client/compte/modifier?error=true";
+		}
+		
+	}
+	
+	@PostMapping("/rechercher")
+	public String rechercheSimple(Model model, HttpSession session, String phrase) {
+		
+		String token = (String) session.getAttribute("TOKEN");
+		token = "Bearer " + token;
+		
+		Utilisateur utilisateur = userConnexion.obtenirUtilisateur(session, model);
+		
+		if (phrase.isEmpty()) {
+			
+			return "redirect:/biblio/client/";
+			
+		}else {
+			
+		List<OuvrageAux> ouvrages = microServiceOuvrages.rechercheSimple(token, phrase);
+		
+		List<Integer> nbreExemplairesDispos = pageOuvrage.exemplairesDisposParOuvrage(ouvrages);
+		
+		model.addAttribute("ouvrages", ouvrages);
+		model.addAttribute("nbreExemplairesDispos", nbreExemplairesDispos);
+		model.addAttribute("rubrique", "toutes");
+		
+		return Constants.RECHERCHE;
+		
+		}
 	}
 	
 }
