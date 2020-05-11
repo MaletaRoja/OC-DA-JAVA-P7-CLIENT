@@ -37,10 +37,10 @@
 		<!-- ----------------- -->
 		<div class="row d-flex justify-content-center">
 
-			
-				<h1>Listes de tous les ouvrages</h1>
-			
-		
+
+			<h1>Listes de tous les ouvrages</h1>
+
+
 
 		</div>
 
@@ -58,28 +58,32 @@
 							<th scope="col">Edition</th>
 							<th scope="col">Genre</th>
 							<th scope="col">disponibles</th>
-							<th scope="col">Emprunter</th>
+							<!--  <th scope="col">Emprunter</th> -->
 						</tr>
 					</thead>
 					<tbody>
-						<tr  th:each="ouvrage, iStat: ${ouvrages}">
+						<tr th:each="ouvrage, iStat: ${ouvrages}">
 							<th scope="row"><span th:text="${iStat.count}"></span></th>
-							 <td th:text="${ouvrage.titre}" />
-							<td th:text="${ouvrage.auteur_prenom} + ' ' + ${ouvrage.auteur_nom}"/>
+							<td th:text="${ouvrage.titre}" />
+							<td
+								th:text="${ouvrage.auteur_prenom} + ' ' + ${ouvrage.auteur_nom}" />
 							<td th:text="${ouvrage.edition}" />
 							<td th:text="${ouvrage.genre}" />
 							<td th:text="${nbreExemplairesDispos.get(iStat.index)}" />
-							
+
+							<!--  
 							<span th:if="${nbreExemplairesDispos.get(iStat.index)>0}">
 							<td><a th:href="@{/biblio/client/emprunter/{id}/{rub}(id=${iStat.index}, rub=${rubrique})}">Emprunter</a></td>
 							</span>
 							
+							-->
+
 							<span th:unless="${nbreExemplairesDispos.get(iStat.index)>0}">
-							<td></td>
+								<td></td>
 							</span>
-							
+
 						</tr>
-						
+
 					</tbody>
 				</table>
 
@@ -92,7 +96,8 @@
 		<div class="row mt-3">
 			<div class="col d-flex justify-content-center">
 				<div class="form-group ">
-					<a href="/biblio/client/espace"><p type="text" class="btn btn-block"
+					<a href="/biblio/client/espace"><p type="text"
+							class="btn btn-block"
 							style="background-color: #a32fa9; color: white; width: 350px;">Retour</p></a>
 				</div>
 			</div>
