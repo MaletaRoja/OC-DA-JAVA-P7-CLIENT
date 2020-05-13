@@ -319,6 +319,21 @@ public class ClientController {
 		return Constants.CREATION_COMPTE;
 	}
 	
+	@PostMapping("/compte")  // Création du compte
+	public String creationCompte(Model model, FormCompte formCompte) {
+		
+		UtilisateurAux utilisateurAux = new UtilisateurAux();
+		utilisateurAux.setPrenom(formCompte.getPrenom());
+		utilisateurAux.setNom(formCompte.getNom());
+		utilisateurAux.setToken(formCompte.getPassword());
+		utilisateurAux.setUsername(formCompte.getUsername());
+		utilisateurAux.setRole("USER");
+		
+		microServiceOuvrages.creerCompte(utilisateurAux);
+			
+		return Constants.PAGE_CONNEXION;
+	}
+	
 	@PostMapping("/compte/modifier")
 	public String enregitrementModification(Model model, HttpSession session, FormCompte formCompte) {
 		
