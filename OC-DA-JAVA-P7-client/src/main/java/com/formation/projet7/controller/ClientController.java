@@ -334,6 +334,22 @@ public class ClientController {
 		return Constants.PAGE_CONNEXION;
 	}
 	
+	@GetMapping("/compte/modifier")
+	public String modifierCompte(@RequestParam(name = "error", required = false) boolean error,Model model, HttpSession session) {
+		
+		Utilisateur utilisateur = (Utilisateur) session.getAttribute("USER");
+		FormCompte formCompte = new FormCompte();
+		formCompte.setNom(utilisateur.getNom());
+		formCompte.setPrenom(utilisateur.getPrenom());
+		formCompte.setUsername(utilisateur.getUsername());
+		model.addAttribute("formCompte", formCompte);
+		model.addAttribute("authentification", true);
+		model.addAttribute("utilisateur", utilisateur);
+		model.addAttribute("error", error);
+		
+		return Constants.MODIFIER_COMPTE;
+	}
+	
 	@PostMapping("/compte/modifier")
 	public String enregitrementModification(Model model, HttpSession session, FormCompte formCompte) {
 		
